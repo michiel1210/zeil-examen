@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stuurbrevet – oefenexamens en vraagtypes</title>
+<style>
+:root{
+  --navy:#0e2a47; --navy2:#16406b; --sea:#2b7bb9; --sea-l:#e6f1fa; --ink:#1d2b3a; --muted:#5b6b7c;
+  --line:#d8e2ec; --bg:#f4f7fa; --card:#ffffff; --ok:#1f8a4c; --ok-l:#e3f5ea; --bad:#c62828; --bad-l:#fdecec;
+  --warn:#b26a00; --warn-l:#fff4e0; --sel:#dbeafe; --r:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:16px}
+header.top{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:22px 16px 0}
+header.top .wrap{max-width:1000px;margin:0 auto}
+header.top h1{margin:0;font-size:1.55rem;letter-spacing:.2px}
+header.top p{margin:4px 0 14px;color:#c8daec;font-size:.95rem}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+nav.tabs button{border:0;background:rgba(255,255,255,.12);color:#e9f2fb;padding:10px 18px;border-radius:10px 10px 0 0;font-size:1rem;font-weight:600;cursor:pointer}
+nav.tabs button:hover{background:rgba(255,255,255,.22)}
+nav.tabs button.on{background:var(--bg);color:var(--navy)}
+main{max-width:1000px;margin:0 auto;padding:18px 14px 60px}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(14,42,71,.04)}
+h2{margin:0 0 10px;font-size:1.3rem;color:var(--navy)}
+h3{margin:14px 0 6px;font-size:1.05rem;color:var(--navy2)}
+.muted{color:var(--muted)}
+.btn{border:1px solid var(--sea);background:var(--sea);color:#fff;border-radius:9px;padding:9px 16px;font-size:.98rem;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:#fff;color:var(--sea)}
+.btn.gray{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.warn{background:var(--warn);border-color:var(--warn)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+/* startscherm */
+.choice{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:8px 0 14px}
+.choice label{display:block;border:2px solid var(--line);border-radius:11px;padding:11px 13px;cursor:pointer;background:#fff}
+.choice label:hover{border-color:#9cc3e3}
+.choice input{margin-right:7px}
+.choice label.on{border-color:var(--sea);background:var(--sea-l)}
+.choice small{display:block;color:var(--muted);margin-left:22px}
+.resume{background:var(--warn-l);border:1px solid #f0d199;border-radius:10px;padding:10px 14px;margin-bottom:12px}
+/* quiz */
+.qbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.8rem;font-weight:700;background:var(--sea-l);color:var(--navy2)}
+.badge.ex{background:#fde7d3;color:#8a4200}
+.badge.d1{background:#e1effa;color:#134a7a}.badge.d2{background:#e9e4fb;color:#4b2a8c}
+.badge.t{background:#eef2f5;color:#435466;font-weight:600}
+.prog{height:7px;background:#e3e9ef;border-radius:99px;overflow:hidden;flex-basis:100%}
+.prog i{display:block;height:100%;background:var(--sea);width:0}
+.qnum{font-weight:700;color:var(--navy)}
+.qtext{font-size:1.12rem;font-weight:600;margin:6px 0 12px}
+.figwrap{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:6px 0 14px}
+svg.fig{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff}
+svg.fig-sit,svg.fig-moor{width:420px}
+svg.fig-sign{width:140px;border:0;background:transparent}
+svg.fig-shapes{width:110px}
+svg.fig-lights,svg.fig-lead{width:300px}
+svg.fig-buoy{width:130px}
+svg.fig-flag{width:180px}
+.blink{animation:bl 1s steps(2,start) infinite}
+@keyframes bl{to{visibility:hidden}}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;border:2px solid var(--line);background:#fff;border-radius:11px;padding:11px 14px;font-size:1rem;cursor:pointer;color:var(--ink);width:100%}
+.opt:hover{border-color:#9cc3e3}
+.opt .k{flex:0 0 28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:#eef3f8;color:var(--navy)}
+.opt.sel{border-color:var(--sea);background:var(--sel)}
+.opt.sel .k{background:var(--sea);color:#fff}
+.opt.ok{border-color:var(--ok);background:var(--ok-l)}
+.opt.ok .k{background:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);background:var(--bad-l)}
+.opt.bad .k{background:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+.expl{margin-top:12px;border-left:4px solid var(--sea);background:var(--sea-l);padding:10px 14px;border-radius:0 10px 10px 0}
+.expl.ok{border-color:var(--ok);background:var(--ok-l)}
+.expl.bad{border-color:var(--bad);background:var(--bad-l)}
+.expl b.v{display:block;margin-bottom:3px}
+.expl .tip{margin-top:6px;font-size:.92rem;color:var(--muted)}
+.expl .tip a{color:var(--sea);cursor:pointer;text-decoration:underline}
+.qnav{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.grid-wrap{margin-top:14px}
+.grid-wrap h4{margin:10px 0 5px;font-size:.85rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.qgrid{display:flex;flex-wrap:wrap;gap:5px}
+.qgrid button{width:36px;height:34px;border-radius:8px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:.85rem;cursor:pointer;color:var(--ink);position:relative}
+.qgrid button.ans{background:#dbe8f5;border-color:#b6cfe7}
+.qgrid button.ok{background:var(--ok-l);border-color:#9ad3b1;color:#145c33}
+.qgrid button.bad{background:var(--bad-l);border-color:#efa3a3;color:#8e1c1c}
+.qgrid button.cur{outline:3px solid var(--navy);outline-offset:1px}
+.qgrid button.flag::after{content:"";position:absolute;top:2px;right:2px;width:7px;height:7px;border-radius:50%;background:var(--warn)}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy2)}
+/* resultaat */
+.verdict{font-size:1.3rem;font-weight:800;padding:12px 16px;border-radius:11px;margin:4px 0 14px}
+.verdict.ok{background:var(--ok-l);color:var(--ok)}.verdict.bad{background:var(--bad-l);color:var(--bad)}
+.tbl{border-collapse:collapse;width:100%;font-size:.95rem;margin:6px 0 10px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left}
+.tbl th{background:#f0f5fa;color:var(--navy2);font-weight:700}
+.tbl tr.tot td{font-weight:700}
+.pass{color:var(--ok);font-weight:700}.fail{color:var(--bad);font-weight:700}
+.bar{height:9px;background:#e6ecf2;border-radius:99px;overflow:hidden;min-width:80px}
+.bar i{display:block;height:100%}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+/* gids */
+.toc{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px}
+.toc a{background:#fff;border:1px solid var(--line);padding:5px 11px;border-radius:99px;color:var(--navy2);text-decoration:none;font-size:.9rem;cursor:pointer}
+.toc a:hover{border-color:var(--sea)}
+.tcard h2{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tcard .ond{font-size:.8rem;font-weight:700;color:var(--muted);background:#eef2f5;padding:2px 9px;border-radius:99px}
+ol.steps{padding-left:22px;margin:6px 0}
+ol.steps li{margin:5px 0}
+ul.ez{margin:6px 0;padding-left:20px}
+.box{border-radius:10px;padding:9px 13px;margin:10px 0}
+.box.ez{background:#eaf6ee;border:1px solid #c5e6cf}
+.box.val{background:var(--warn-l);border:1px solid #f0d199}
+.box h4{margin:0 0 4px;font-size:.92rem}
+.box ul{margin:0;padding-left:20px}
+.tcard .tbl td:first-child{font-weight:600;white-space:nowrap}
+.review-filter{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.rv{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:10px 0;background:#fff}
+.rv.ok{border-left:5px solid var(--ok)}.rv.bad{border-left:5px solid var(--bad)}
+.rv .qtext{font-size:1rem}
+.rv .ans{margin:4px 0;font-size:.95rem}
+.small{font-size:.88rem}
+footer{max-width:1000px;margin:0 auto;padding:0 16px 30px;color:var(--muted);font-size:.85rem}
+@media (max-width:600px){
+  header.top h1{font-size:1.25rem}
+  nav.tabs button{padding:9px 11px;font-size:.92rem}
+  .card{padding:14px}
+  .qtext{font-size:1.04rem}
+}
+@media print{nav.tabs,.qnav,.btn{display:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>⚓ Stuurbrevet – oefenexamens</h1>
+  <p>Beperkt en algemeen stuurbrevet (België) · twee volledige oefenexamens in de stijl van het FOD-examen + uitleg per vraagtype</p>
+  <nav class="tabs" role="tablist">
+    <button data-tab="ex1" class="on" role="tab">Examen 1</button>
+    <button data-tab="ex2" role="tab">Examen 2</button>
+    <button data-tab="gids" role="tab">Vraagtypes &amp; aanpak</button>
+  </nav>
+</div></header>
+<main>
+  <section class="panel on" id="p-ex1"></section>
+  <section class="panel" id="p-ex2"></section>
+  <section class="panel" id="p-gids"></section>
+</main>
+<footer>Oefenmateriaal: eigen vragen in de stijl van de voorbeeldreeksen, gebaseerd op het Algemeen Politiereglement voor de Scheepvaart op de Binnenwateren, het Internationaal Aanvaringsreglement (IAR/COLREG) en de IALA-betonning. Het officiële examen en de regelgeving van de FOD Mobiliteit en Vervoer blijven de referentie. Je voortgang wordt alleen in deze browser bewaard.</footer>
+<script>
+/* Vraagtypes:
+ voorrang, tekens, lichten, dagtekens, geluid, betonning, kennis, reken, getij, meteo, manoeuvre, brand, ehbo, nood
+ ond: R = Reglementen, N = Navigatie, V = Veiligheid en manoeuvres
+*/
+var VR = ["A heeft voorrang","B heeft voorrang","Beide moeten uitwijken"];
+var EXAMS = {};
+
+EXAMS[1] = [
+/* ===== EXAMEN 1 · DEEL 1 · BEPERKT STUURBREVET ===== */
+{id:"1.1.01",d:1,o:"R",t:"voorrang",q:"Op een rivier kruisen een groot vrachtschip (A) en een kleine motorboot (B) elkaar. Wie heeft voorrang?",
+ fig:{f:"sit",water:"river",cur:90,boats:[{l:"A",k:"large",x:120,y:100,h:90},{l:"B",k:"motor",x:250,y:150,h:330}]},
+ c:VR,a:0,x:"Kleine schepen (korter dan 20 m) moeten altijd uitwijken voor schepen die geen klein schip zijn. B moet A de nodige ruimte laten."},
+{id:"1.1.02",d:1,o:"R",t:"voorrang",q:"Twee kleine schepen naderen elkaar op kruisende koersen: A is een motorboot, B een zeilboot die enkel zeilt. Wie heeft voorrang?",
+ fig:{f:"sit",water:"river",boats:[{l:"A",k:"motor",x:110,y:100,h:90},{l:"B",k:"sail",x:230,y:150,h:0}],wind:270},
+ c:VR,a:1,x:"Een klein motorschip moet uitwijken voor alle andere kleine schepen, dus ook voor een kleine zeilboot. B heeft voorrang."},
+{id:"1.1.03",d:1,o:"R",t:"voorrang",q:"Twee kleine zeilboten naderen elkaar. A krijgt de wind over stuurboord, B krijgt de wind over bakboord. Wie heeft voorrang?",
+ fig:{f:"sit",water:"sea",wind:0,boats:[{l:"A",k:"sail",x:250,y:160,h:300},{l:"B",k:"sail",x:110,y:160,h:60}]},
+ c:VR,a:0,x:"Bij zeilboten met de wind aan verschillende kanten moet de boot die de wind over bakboord krijgt uitwijken. Dat is B, dus A heeft voorrang."},
+{id:"1.1.04",d:1,o:"R",t:"voorrang",q:"Twee kleine motorboten varen recht op elkaar af (tegengestelde koersen, aanvaringsgevaar). Wat moet er gebeuren?",
+ fig:{f:"sit",water:"river",boats:[{l:"A",k:"motor",x:90,y:100,h:90},{l:"B",k:"motor",x:250,y:100,h:270}]},
+ c:VR,a:2,x:"Gelijkwaardige schepen die elkaar recht tegemoet varen, wijken allebei uit naar stuurboord zodat ze elkaar bakboord aan bakboord voorbijvaren."},
+{id:"1.1.05",d:1,o:"R",t:"geluid",q:"Een schip geeft twee korte stoten. Wat betekent dat?",
+ c:["Ik wend naar stuurboord","Ik wend naar bakboord","Mijn schroef slaat achteruit"],a:1,x:"1 korte stoot = ik wend naar stuurboord; 2 korte stoten = ik wend naar bakboord; 3 korte stoten = mijn schroef slaat achteruit. Een korte stoot duurt ongeveer 1 seconde."},
+{id:"1.1.06",d:1,o:"R",t:"tekens",q:"Wat betekent dit bord langs een vaarweg?",
+ fig:{f:"sign",k:"A6"},c:["Ankeren verboden","Ankeren toegelaten","Meren verboden"],a:0,x:"Een verbodsteken (A) heeft een rode rand en een rode schuine streep. Het doorgestreepte anker betekent: verbod te ankeren en ankers, kabels of kettingen te slepen."},
+{id:"1.1.07",d:1,o:"R",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"E5"},c:["Parkeerplaats voor auto's aan de kade","Toelating om ligplaats te nemen (aan te leggen)","Verplichting om te stoppen"],a:1,x:"Blauwe borden (E-tekens) geven aanwijzingen of toelatingen. De P betekent dat je hier ligplaats mag nemen aan de zijde waar het bord staat."},
+{id:"1.1.08",d:1,o:"R",t:"kennis",q:"Volgens het reglement is een 'klein schip' een schip met een romplengte van minder dan …",
+ c:["15 m","20 m","24 m"],a:1,x:"Een klein schip is korter dan 20 m (met uitzonderingen, zoals duw- en sleepboten en passagiersschepen voor meer dan 12 passagiers). 15 m is een grens voor de brevetplicht, niet voor 'klein schip'."},
+{id:"1.1.09",d:1,o:"R",t:"dagtekens",q:"Een zeiljacht voert overdag dit teken voorin. Wat betekent het?",
+ fig:{f:"shapes",s:["cone-down"]},c:["Het jacht ligt voor anker","Het jacht zeilt en gebruikt tegelijk zijn motor","Het jacht is aan de grond gelopen"],a:1,x:"Een zwarte kegel met de punt naar beneden betekent: dit schip zeilt en wordt tegelijk door zijn motor voortbewogen. Voor de reglementen is het dan een motorschip."},
+{id:"1.1.10",d:1,o:"R",t:"lichten",q:"Een zeiljacht van 9 m vaart 's nachts enkel op zeil. Welke lichten voert het?",
+ c:["Zijlichten en heklicht, of een driekleurenlicht in de top van de mast","Toplicht, zijlichten en heklicht","Eén wit rondom schijnend licht"],a:0,x:"Een zeilboot die enkel zeilt voert zijlichten en een heklicht; die mogen gecombineerd worden in één driekleurenlicht in de masttop. Een toplicht hoort bij een motorschip: gebruik je de motor, dan voer je de lichten van een motorschip."},
+{id:"1.1.11",d:1,o:"R",t:"kennis",q:"Wanneer heb je in België een stuurbrevet nodig voor een pleziervaartuig op de binnenwateren (zone 1)?",
+ c:["Altijd, voor elk vaartuig met een motor","Als het vaartuig met motor sneller dan 20 km/u kan varen of een romplengte van meer dan 15 m heeft","Enkel als je 's nachts vaart"],a:1,x:"Een vaarbevoegdheidsbewijs is nodig als het vaartuig met motor sneller dan 20 km/u kan varen of een romplengte van meer dan 15 m heeft. Het beperkt stuurbrevet geldt in zone 0 en 1."},
+{id:"1.1.12",d:1,o:"R",t:"dagtekens",q:"Een binnenschip voert drie blauwe kegels (punt naar beneden). Op welke minimale afstand moet je blijven als je in de buurt wil afmeren?",
+ fig:{f:"shapes",s:["cone-down","cone-down","cone-down"],color:"blue"},c:["10 m","50 m","100 m"],a:2,x:"Blauwe kegels wijzen op gevaarlijke stoffen: 1 kegel = brandbare stoffen, 2 = schadelijk voor de gezondheid, 3 = ontplofbare stoffen. De minimale afstand om aan te meren is 10, 50 en 100 m."},
+
+{id:"1.1.13",d:1,o:"N",t:"kennis",q:"Wat is de 'rechteroever' van een rivier?",
+ c:["De oever aan je rechterhand als je stroomafwaarts kijkt","De oever aan je rechterhand als je stroomopwaarts kijkt","De oever aan stuurboord, in welke richting je ook vaart"],a:0,x:"Linker- en rechteroever worden altijd bepaald voor iemand die stroomafwaarts kijkt (naar de monding). Ze hangen dus niet af van je eigen vaarrichting."},
+{id:"1.1.14",d:1,o:"N",t:"betonning",q:"Op een rivier zie je deze rode ton. Wat geeft ze aan?",
+ fig:{f:"buoy",k:"red"},c:["De rechterzijde van het vaarwater (stroomafwaarts gezien)","De linkerzijde van het vaarwater (stroomafwaarts gezien)","Een gevaar midden in het vaarwater"],a:0,x:"Op de binnenwateren markeren rode tekens (cilinder of ton) de rechterzijde en groene (kegel) de linkerzijde van het vaarwater, stroomafwaarts gezien."},
+{id:"1.1.15",d:1,o:"N",t:"tekens",q:"Een bord heeft een blauwe achtergrond met een wit symbool. Wat voor teken is dat?",
+ c:["Een verbodsteken","Een gebodsteken","Een aanwijzingsteken (informatie of toelating)"],a:2,x:"SIGNI: A = verbod (rode rand + schuine streep), B = gebod (rode rand), C = beperking, D = aanbeveling, E = aanwijzing (blauw)."},
+{id:"1.1.16",d:1,o:"N",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"B6",n:"12"},c:["Minimumsnelheid 12 km/u","Maximumsnelheid 12 km/u","Vaarweg 12 m breed"],a:1,x:"Een bord met rode rand en een getal is gebodsteken B.6: verplichting de aangegeven snelheid (in km/u) niet te overschrijden."},
+{id:"1.1.17",d:1,o:"N",t:"reken",q:"Je moet 24 km stroomafwaarts varen. Je boot vaart 10 km/u door het water en de stroom is 2 km/u. Hoe lang doe je erover?",
+ c:["2 uur","2 uur 24 min","3 uur"],a:0,x:"Snelheid over de grond = 10 + 2 = 12 km/u (stroom mee). Tijd = 24 ÷ 12 = 2 uur."},
+{id:"1.1.18",d:1,o:"N",t:"reken",q:"Dezelfde 24 km vaar je terug, stroomopwaarts (10 km/u door het water, stroom 2 km/u). Hoe lang doe je erover?",
+ c:["2 uur","2 uur 24 min","3 uur"],a:2,x:"Tegen de stroom in: 10 − 2 = 8 km/u over de grond. Tijd = 24 ÷ 8 = 3 uur."},
+{id:"1.1.19",d:1,o:"N",t:"reken",q:"De kaart vermeldt voor een brug een doorvaarthoogte van 5,00 m bij het referentiepeil. Het water staat vandaag 0,30 m hoger dan dat peil. Je boot steekt 4,60 m boven het water uit. Hoeveel ruimte heb je over?",
+ c:["0,10 m","0,40 m","0,70 m"],a:0,x:"Hoger water = minder doorvaarthoogte: 5,00 − 0,30 = 4,70 m. 4,70 − 4,60 = 0,10 m ruimte. Zeer krap: hou rekening met golven en neem altijd marge."},
+{id:"1.1.20",d:1,o:"N",t:"kennis",q:"Een schip dat tegen de stroom in vaart, is aan het …",
+ c:["afvaren","opvaren","oversteken"],a:1,x:"Opvaren (bergvaart) = stroomopwaarts, tegen de stroom in. Afvaren (talvaart) = stroomafwaarts, met de stroom mee."},
+{id:"1.1.21",d:1,o:"N",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"E6"},c:["Ankeren toegelaten","Ankeren verboden","Ligplaats voor zeeschepen"],a:0,x:"Blauw bord (E-teken) met een anker: ankeren is toegelaten aan de zijde waar het bord staat. Met rode rand en schuine streep zou het een verbod zijn."},
+{id:"1.1.22",d:1,o:"N",t:"reken",q:"Je vaart met 8 km/u over de grond. Hoe ver ben je na 45 minuten?",
+ c:["4 km","6 km","8 km"],a:1,x:"Afstand = snelheid × tijd = 8 km/u × 0,75 u = 6 km."},
+
+{id:"1.1.23",d:1,o:"V",t:"manoeuvre",q:"Je motorboot heeft één rechtsdraaiende schroef. Je zet de motor in achteruit. Wat merk je bij windstil weer?",
+ c:["Het hek trekt naar bakboord","Het hek trekt naar stuurboord","De boot vaart recht achteruit"],a:0,x:"Schroefeffect: een rechtsdraaiende schroef trekt het hek bij achteruitvaren naar bakboord. Bij een linksdraaiende schroef is het omgekeerd."},
+{id:"1.1.24",d:1,o:"V",t:"manoeuvre",q:"Welke lijn op de tekening is de voorspring?",
+ fig:{f:"moor"},c:["Lijn 1","Lijn 2","Lijn 3"],a:1,x:"De voorspring loopt van het voorschip schuin naar achteren naar de kade (lijn 2) en houdt de boot tegen als die naar voren wil. Lijn 1 is de voorlijn, lijn 3 de achterspring en lijn 4 de achterlijn."},
+{id:"1.1.25",d:1,o:"V",t:"brand",q:"Water is een goed blusmiddel voor …",
+ c:["Brand van vaste stoffen (klasse A), zoals hout en textiel","Brand van brandbare vloeistoffen (klasse B), zoals benzine","Beide"],a:0,x:"Water koelt en is geschikt voor klasse A. Op brandende vloeistoffen zoals benzine of olie verspreidt water de brand. Gebruik daar schuim, poeder of CO₂."},
+{id:"1.1.26",d:1,o:"V",t:"brand",q:"Je hebt benzine getankt voor je binnenboordmotor. Wat doe je voor je de motor start?",
+ c:["Meteen starten, zodat de dampen weggeblazen worden","De motorruimte enkele minuten ventileren (blower aan, luiken open) en controleren op benzinegeur","Eerst de accu loskoppelen"],a:1,x:"Benzinedampen zijn zwaarder dan lucht en verzamelen zich onderin. Eén vonk van de startmotor kan dan een ontploffing veroorzaken. Eerst ventileren en ruiken."},
+{id:"1.1.27",d:1,o:"V",t:"techniek",q:"Welke anode gebruik je het best op een boot die enkel in zoet water vaart?",
+ c:["Zink","Magnesium","Koper"],a:1,x:"In zoet water werkt magnesium het best. Zink (of aluminium) is voor zout en brak water. Anodes beschermen metalen onderdelen tegen elektrolyse (galvanische corrosie)."},
+{id:"1.1.28",d:1,o:"V",t:"ehbo",q:"Een volwassene is bewusteloos en ademt niet normaal. Hoe reanimeer je?",
+ c:["15 borstcompressies, 2 beademingen","30 borstcompressies, 2 beademingen","5 borstcompressies, 1 beademing"],a:1,x:"Reanimatie bij volwassenen: 30 borstcompressies (100 à 120 per minuut, 5 à 6 cm diep) afgewisseld met 2 beademingen. Laat snel hulp en een AED komen."},
+{id:"1.1.29",d:1,o:"V",t:"manoeuvre",q:"Je wil op een rivier aanleggen aan een kade. Hoe doe je dat het best?",
+ c:["Met de stroom mee, zodat je snel bent","Tegen de stroom in, zodat je langzaam en gecontroleerd nadert","Dwars op de stroom"],a:1,x:"Tegen de stroom in aanleggen geeft weinig snelheid over de grond en toch voldoende stuurvermogen. Met de stroom mee nader je te snel."},
+{id:"1.1.30",d:1,o:"V",t:"techniek",q:"Welke kleur hebben de uitlaatgassen van een goed afgestelde motor die op temperatuur is?",
+ c:["Lichtblauw","Zwart","Nagenoeg kleurloos"],a:2,x:"Normaal zijn de uitlaatgassen nagenoeg kleurloos. Zwart wijst op onvolledige verbranding of overbelasting, blauw op olieverbranding, witte stoom bij een koude start is normaal."},
+
+/* ===== EXAMEN 1 · DEEL 2 · AANVULLING ALGEMEEN ===== */
+{id:"1.2.01",d:2,o:"R",t:"lichten",q:"Je ziet op zee 's nachts deze lichten (vooraanzicht). Wat voor schip is dat?",
+ fig:{f:"lights",view:"Vooraanzicht",L:[[100,34,"w"],[100,56,"r"],[82,96,"g"],[118,96,"r"]]},
+ c:["Een loodsvaartuig in dienst, varend","Een vissersschip, varend","Een schip voor anker"],a:0,x:"Wit boven rood (rondom schijnend) = loodsvaartuig in dienst ('wit boven rood, loods aan boord'). Met zijlichten is het varend. Rood boven wit is een vissersschip."},
+{id:"1.2.02",d:2,o:"R",t:"lichten",q:"Op zee zie je twee rode rondom schijnende lichten boven elkaar, plus een groen en een rood zijlicht (vooraanzicht). Wat betekent dat?",
+ fig:{f:"lights",view:"Vooraanzicht",L:[[100,34,"r"],[100,58,"r"],[82,96,"g"],[118,96,"r"]]},
+ c:["Een schip dat niet onder bevel is en vaart loopt","Een schip dat beperkt is in zijn manoeuvreerbaarheid en stil ligt","Een schip dat aan de grond zit"],a:0,x:"Twee rode lichten boven elkaar = niet onder bevel ('rood boven rood, de kapitein is dood'). De zijlichten tonen dat het vaart loopt. Aan de grond: ankerlichten plus twee rode lichten, zonder zijlichten."},
+{id:"1.2.03",d:2,o:"R",t:"dagtekens",q:"Een zeeschip voert overdag deze dagtekens boven elkaar. Wat betekent dat?",
+ fig:{f:"shapes",s:["ball","diamond","ball"]},c:["Het schip is aan de grond","Het schip is beperkt in zijn manoeuvreerbaarheid","Het schip is niet onder bevel"],a:1,x:"Bol – ruit – bol = beperkt in manoeuvreerbaarheid (bv. baggeren, kabels leggen). Het nachtsein is rood – wit – rood. Twee bollen = niet onder bevel; drie bollen = aan de grond."},
+{id:"1.2.04",d:2,o:"R",t:"dagtekens",q:"Een schip op zee voert overdag drie zwarte bollen boven elkaar. Wat betekent dat?",
+ fig:{f:"shapes",s:["ball","ball","ball"]},c:["Het schip ligt voor anker","Het schip is aan de grond gelopen","Het schip is bezig met mijnenvegen"],a:1,x:"Drie bollen boven elkaar = aan de grond. Eén bol = voor anker. Bij mijnenvegers staan de drie bollen niet boven elkaar maar één in de top en één aan elke kant van de ra."},
+{id:"1.2.05",d:2,o:"R",t:"geluid",q:"Bij mist hoor je om de twee minuten één lange stoot. Welk schip geeft dat sein?",
+ c:["Een motorschip dat vaart loopt","Een motorschip dat stilligt in het water (varend, geen vaart)","Een zeilschip"],a:0,x:"Beperkt zicht (IAR regel 35): motorschip met vaart = 1 lange stoot, ten hoogste om de 2 minuten. Motorschip zonder vaart = 2 lange. Zeilschip (en o.a. niet onder bevel of vissend) = 1 lange + 2 korte."},
+{id:"1.2.06",d:2,o:"R",t:"kennis",q:"Waar moet een schip blijven dat een nauw vaarwater op zee volgt?",
+ c:["Zo dicht als veilig kan bij de buitengrens aan zijn stuurboordzijde","In het midden van het vaarwater","Zo dicht mogelijk bij de buitengrens aan zijn bakboordzijde"],a:0,x:"IAR regel 9: in een nauw vaarwater hou je zo dicht als veilig en doenlijk bij de buitengrens aan je stuurboordzijde. Schepen korter dan 20 m en zeilschepen mogen schepen die enkel in dat vaarwater kunnen varen niet hinderen."},
+{id:"1.2.07",d:2,o:"R",t:"voorrang",q:"Op open zee kruisen twee motorschepen elkaars koers met aanvaringsgevaar. A ziet B aan zijn stuurboordzijde. Wie heeft voorrang?",
+ fig:{f:"sit",water:"sea",boats:[{l:"A",k:"motor",x:110,y:150,h:0},{l:"B",k:"motor",x:250,y:70,h:270}]},
+ c:VR,a:1,x:"IAR regel 15: het motorschip dat het andere aan zijn stuurboordzijde heeft, moet uitwijken. A ziet B aan stuurboord, dus A wijkt uit (bij voorkeur achter B langs) en B heeft voorrang."},
+{id:"1.2.08",d:2,o:"R",t:"kennis",q:"Wanneer ben je op zee een 'oplopend schip'?",
+ c:["Als je een ander schip nadert vanuit een richting van meer dan 22,5° achterlijker dan dwars","Als je sneller vaart dan het andere schip, ongeacht de richting","Als je een schip nadert dat op tegengestelde koers vaart"],a:0,x:"IAR regel 13: je bent oplopend als je het andere schip nadert vanuit meer dan 22,5° achterlijker dan dwars. 's Nachts zie je dan enkel zijn heklicht. Het oplopende schip moet altijd uitwijken."},
+{id:"1.2.09",d:2,o:"R",t:"kennis",q:"In welke zones is het algemeen stuurbrevet geldig?",
+ c:["Zone 0 en 1","Zone 0, 1, 2, 3 en 4 (tot 6 zeemijl uit de kust)","Alle zones, ook ver op zee"],a:1,x:"Beperkt stuurbrevet: zone 0 en 1 (binnenwateren). Algemeen stuurbrevet: zone 0 t.e.m. 4, dus ook de Beneden-Zeeschelde (2), de kusthavens (3) en zee tot 6 zeemijl uit de kust (4). Verder op zee heb je een hoger brevet nodig (yachtman)."},
+{id:"1.2.10",d:2,o:"R",t:"kennis",q:"Je moet een verkeersscheidingsstelsel op zee oversteken. Hoe doe je dat?",
+ c:["Met een koers die zo veel mogelijk loodrecht staat op de algemene verkeersrichting","Schuin, zodat je mee kan met het verkeer","Je mag nooit oversteken"],a:0,x:"IAR regel 10: oversteken gebeurt zo veel mogelijk met de koers haaks op de verkeersrichting, zodat je zo kort mogelijk in de verkeersbaan bent en duidelijk herkenbaar bent als overstekend schip."},
+
+{id:"1.2.11",d:2,o:"N",t:"betonning",q:"Wat betekent deze boei op zee?",
+ fig:{f:"buoy",k:"N"},c:["Het veilige vaarwater ligt ten noorden van de boei","Het veilige vaarwater ligt ten zuiden van de boei","Een alleenliggend gevaar"],a:0,x:"Noordkardinaal: zwart boven geel, twee kegels met de punten omhoog. Het veilige water ligt ten noorden, dus je passeert de boei aan de noordzijde."},
+{id:"1.2.12",d:2,o:"N",t:"betonning",q:"Je vaart vanuit zee een haven binnen (IALA-systeem A). Aan welke kant hou je de groene, kegelvormige tonnen?",
+ fig:{f:"buoy",k:"green"},c:["Aan bakboord","Aan stuurboord","Maakt niet uit"],a:1,x:"IALA A (Europa) geldt bij het binnenvaren vanuit zee: rood aan bakboord, groen aan stuurboord."},
+{id:"1.2.13",d:2,o:"N",t:"betonning",q:"Een boei toont het lichtkarakter Q(6)+LFl. Welke boei is dat?",
+ c:["Oostkardinaal","Zuidkardinaal","Westkardinaal"],a:1,x:"Denk aan een klok: oost = 3 flitsen, zuid = 6 flitsen + 1 lange flits, west = 9 flitsen, noord = onafgebroken."},
+{id:"1.2.14",d:2,o:"N",t:"getij",q:"Hoe meet je op een zeekaart (Mercatorkaart) een afstand in zeemijl?",
+ c:["Op de liggende rand (lengteschaal)","Op de staande rand (breedteschaal), ter hoogte van de te meten afstand","Met de schaalstok in kilometer"],a:1,x:"1 minuut breedte = 1 zeemijl (1852 m). Meet daarom op de staande rand (breedteschaal), op dezelfde hoogte als de afstand die je meet, want de schaal verandert met de breedte."},
+{id:"1.2.15",d:2,o:"N",t:"reken",q:"Je moet 15 zeemijl afleggen met een snelheid van 6 knopen. Hoe lang duurt de tocht?",
+ c:["2 u 15 min","2 u 30 min","2 u 50 min"],a:1,x:"Tijd = afstand ÷ snelheid = 15 ÷ 6 = 2,5 uur = 2 u 30 min. 1 knoop = 1 zeemijl per uur."},
+{id:"1.2.16",d:2,o:"N",t:"reken",q:"Kompaskoers 120°, deviatie 3° W, variatie 2° O. Wat is de ware koers?",
+ c:["115°","119°","125°"],a:1,x:"Van kompas naar waar: oost optellen, west aftrekken. 120 − 3 (deviatie W) = 117° magnetisch; 117 + 2 (variatie O) = 119° waar."},
+{id:"1.2.17",d:2,o:"N",t:"getij",q:"Wanneer heb je springtij?",
+ c:["Rond nieuwe en volle maan","Rond eerste en laatste kwartier","Enkel in de lente"],a:0,x:"Bij nieuwe en volle maan staan zon en maan op één lijn en versterken ze elkaar: springtij, met het grootste getijverschil. Bij eerste en laatste kwartier is het doodtij."},
+{id:"1.2.18",d:2,o:"N",t:"getij",q:"Volgens de twaalfdenregel stijgt het water het snelst …",
+ c:["in het 1e en 6e uur na laagwater","in het 3e en 4e uur na laagwater","gelijkmatig, elk uur evenveel"],a:1,x:"Twaalfdenregel: 1/12 – 2/12 – 3/12 – 3/12 – 2/12 – 1/12 van het getijverschil per uur. In het 3e en 4e uur verandert het water dus het snelst, en daar is ook de stroom het sterkst."},
+{id:"1.2.19",d:2,o:"N",t:"betonning",q:"Je vaart in op een lichtenlijn (twee geleidelichten). Het hoge, achterste licht staat rechts van het lage, voorste licht. Wat doe je?",
+ fig:{f:"lead"},c:["Bijsturen naar stuurboord tot de lichten boven elkaar staan","Bijsturen naar bakboord tot de lichten boven elkaar staan","Niets, je zit op de lijn"],a:1,x:"Het achterste (hoge) licht verschuift naar dezelfde kant als waar jij van de lijn afwijkt. Staat het rechts van het voorste licht, dan zit je rechts van de lijn: stuur naar bakboord tot beide lichten weer recht boven elkaar staan. Ezelsbrug: stuur naar het voorste (lage) licht toe."},
+{id:"1.2.20",d:2,o:"N",t:"meteo",q:"Je staat met je rug naar de wind (noordelijk halfrond). Waar ligt het lagedrukgebied?",
+ c:["Rechts van je","Links van je (iets naar voren)","Recht voor je"],a:1,x:"Wet van Buys Ballot: met de rug naar de wind ligt op het noordelijk halfrond de lage druk links (iets naar voren) en de hoge druk rechts."},
+
+{id:"1.2.21",d:2,o:"V",t:"manoeuvre",q:"Iemand valt aan stuurboord overboord van je motorboot. Hoe stuur je meteen?",
+ c:["Naar stuurboord, zodat het hek en de schroef van de drenkeling wegdraaien","Naar bakboord, weg van de drenkeling","Recht door en vol gas achteruit"],a:0,x:"Stuur naar de kant waar de persoon overboord ging: zo zwaait je hek (en de draaiende schroef) van de drenkeling weg. Roep 'man overboord', gooi een reddingsboei en blijf de persoon aanwijzen."},
+{id:"1.2.22",d:2,o:"V",t:"nood",q:"Welk van deze signalen is GEEN noodsein?",
+ c:["Een rood handstakellicht","Een oranje rooksignaal","Een wit handstakellicht"],a:2,x:"Rood licht (handfakkel of valschermraket) en oranje rook zijn noodseinen. Een wit handstakellicht gebruik je om de aandacht te trekken of voor een dreigende aanvaring te waarschuwen; het is geen noodsein."},
+{id:"1.2.23",d:2,o:"V",t:"nood",q:"Je motor valt uit op zee bij rustig weer. Er is geen direct levensgevaar, maar je hebt hulp nodig. Welke oproep doe je via de marifoon?",
+ c:["MAYDAY","PAN-PAN","SÉCURITÉ"],a:1,x:"MAYDAY = ernstig en onmiddellijk gevaar voor schip of personen. PAN-PAN = dringende boodschap zonder direct levensgevaar. SÉCURITÉ = veiligheidsbericht, zoals een navigatie- of weerwaarschuwing."},
+{id:"1.2.24",d:2,o:"V",t:"manoeuvre",q:"Je ankert met een ankerketting op 5 m diepte bij rustig weer. Hoeveel ketting steek je minstens uit?",
+ c:["5 m","15 m","50 m"],a:1,x:"Vuistregel: ketting minstens 3 keer de waterdiepte (meer bij wind of stroom), met een ankerlijn 5 à 7 keer. Bij 5 m dus minstens 15 m."},
+{id:"1.2.25",d:2,o:"V",t:"nood",q:"Waar hang je een radarreflector op?",
+ c:["Zo hoog mogelijk","Net boven de waterlijn","Binnen in de kajuit"],a:0,x:"Hoe hoger de radarreflector hangt, hoe verder schepen je op hun radar zien. Hang hem in de juiste stand (zoals voorgeschreven door de fabrikant) en zo hoog mogelijk."},
+{id:"1.2.26",d:2,o:"V",t:"ehbo",q:"Je haalt een onderkoelde persoon uit het water. Wat doe je?",
+ c:["Krachtig de armen en benen wrijven en een glas alcohol geven","Voorzichtig horizontaal behandelen, natte kleren vervangen, inpakken en geleidelijk opwarmen","Meteen onder een hete douche zetten"],a:1,x:"Bij onderkoeling: voorzichtig en horizontaal behandelen, beschermen tegen wind, droge kleren, inpakken en langzaam opwarmen. Niet wrijven, geen alcohol en niet snel opwarmen, want koud bloed uit de ledematen kan het hart verstoren."},
+{id:"1.2.27",d:2,o:"V",t:"brand",q:"Waarom moet een gasdetector voor butaan of propaan laag in de boot hangen?",
+ c:["Omdat het gas lichter is dan lucht","Omdat het gas zwaarder is dan lucht en zich onderin (in de bilge) verzamelt","Omdat de detector daar het minst opvalt"],a:1,x:"Butaan en propaan zijn zwaarder dan lucht en lopen naar het laagste punt. Daar kan een explosief mengsel ontstaan. Sluit de gaskraan na gebruik."},
+{id:"1.2.28",d:2,o:"V",t:"brand",q:"Er is brand in de afgesloten motorruimte. Wat doe je eerst?",
+ c:["Het motorluik openzetten om te kijken","Motor stoppen, brandstoftoevoer afsluiten, luik dicht houden en blussen via de blusopening (CO₂ of brandblusser)","Water in de motorruimte pompen"],a:1,x:"Een open luik geeft het vuur extra zuurstof. Stop de motor, sluit de brandstof af en blus door de blusopening. Hou het luik daarna nog even dicht om herontsteking te voorkomen."},
+{id:"1.2.29",d:2,o:"V",t:"nood",q:"Welk reddingsvest draait een bewusteloze drenkeling op zee het best met het gezicht naar boven?",
+ c:["Een zwemhulp van 50 N","Een reddingsvest van 100 N","Een reddingsvest van 150 N"],a:2,x:"Een 50 N-vest is enkel een drijfhulpmiddel voor zwemmers. 100 N is voor beschut water. 150 N is bedoeld voor zee en draait een bewusteloze persoon (met kraag) op de rug."},
+{id:"1.2.30",d:2,o:"V",t:"nood",q:"Welke kleur hebben reddingsmiddelen (boeien, vlotten, vesten) meestal volgens de internationale normen?",
+ c:["Oranje (goed zichtbare kleur)","Wit","Blauw"],a:0,x:"Reddingsmiddelen moeten een goed zichtbare kleur hebben. In de praktijk is dat (internationaal) oranje, vaak met retroreflecterende stroken."}
+];
+
+EXAMS[2] = [
+/* ===== EXAMEN 2 · DEEL 1 · BEPERKT STUURBREVET ===== */
+{id:"2.1.01",d:1,o:"R",t:"voorrang",q:"Twee kleine schepen naderen elkaar op kruisende koersen: A is een zeilboot die enkel zeilt, B is een roeiboot. Wie heeft voorrang?",
+ fig:{f:"sit",water:"river",wind:180,boats:[{l:"A",k:"sail",x:110,y:100,h:90},{l:"B",k:"row",x:230,y:150,h:330}]},
+ c:VR,a:0,x:"Kleine schepen die niet door een motor en niet door zeilen worden voortbewogen (zoals een roeiboot) moeten uitwijken voor kleine zeilschepen. A heeft voorrang."},
+{id:"2.1.02",d:1,o:"R",t:"voorrang",q:"Op een rivier ontmoeten twee kleine motorboten elkaar bij een nauwe doorvaart waar ze niet tegelijk door kunnen. A vaart stroomopwaarts, B stroomafwaarts. Wie heeft voorrang?",
+ fig:{f:"sit",water:"narrow",cur:90,boats:[{l:"A",k:"motor",x:285,y:110,h:270},{l:"B",k:"motor",x:75,y:110,h:90}]},
+ c:VR,a:1,x:"Bij een nauwe doorvaart wacht het opvarende schip (tegen de stroom in) tot het afvarende schip erdoor is. Het afvarende schip is minder goed manoeuvreerbaar."},
+{id:"2.1.03",d:1,o:"R",t:"voorrang",q:"Twee kleine zeilboten krijgen allebei de wind over bakboord. A ligt aan lij (benedenwinds), B ligt aan loef (bovenwinds). Wie heeft voorrang?",
+ fig:{f:"sit",water:"sea",wind:270,boats:[{l:"B",k:"sail",x:110,y:150,h:60},{l:"A",k:"sail",x:230,y:160,h:0}]},
+ c:VR,a:0,x:"Als beide zeilboten de wind aan dezelfde kant krijgen, wijkt de loefwaartse (bovenwindse) boot uit voor de lijwaartse. B moet uitwijken, dus A heeft voorrang."},
+{id:"2.1.04",d:1,o:"R",t:"voorrang",q:"Kleine motorboot A haalt kleine motorboot B in (A komt van achteren). Wie heeft voorrang?",
+ fig:{f:"sit",water:"river",cur:90,boats:[{l:"A",k:"motor",x:90,y:110,h:90},{l:"B",k:"motor",x:220,y:110,h:90}]},
+ c:VR,a:1,x:"Het oplopende (inhalende) schip moet altijd uit de weg blijven van het schip dat wordt opgelopen. B heeft voorrang; A haalt pas in als dat veilig kan."},
+{id:"2.1.05",d:1,o:"R",t:"geluid",q:"Wat betekent het geluidssein 'drie korte stoten'?",
+ c:["Ik wend naar stuurboord","Mijn schroef slaat achteruit","Ik ben niet in staat te manoeuvreren"],a:1,x:"3 korte = mijn schroef slaat achteruit. 4 korte = ik ben niet in staat te manoeuvreren. Een reeks zeer korte stoten = er dreigt gevaar voor aanvaring."},
+{id:"2.1.06",d:1,o:"R",t:"geluid",q:"Je hoort een reeks zeer korte stoten. Wat betekent dat?",
+ c:["Er dreigt gevaar voor aanvaring","Ik wil inhalen","Ik ga een haven binnenvaren"],a:0,x:"Een reeks van minstens 5 zeer korte stoten (± ¼ seconde) = er dreigt gevaar voor aanvaring. Reageer direct en zoek de oorzaak."},
+{id:"2.1.07",d:1,o:"R",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"A12"},c:["Verboden voor motorvaartuigen","Toegelaten voor motorvaartuigen","Verboden voor kleine vaartuigen zonder motor"],a:0,x:"Rode rand en rode schuine streep = verbod (A-teken). Een doorgestreepte motorboot betekent: verboden voor motorvaartuigen."},
+{id:"2.1.08",d:1,o:"R",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"A9"},c:["Gevaar voor hoge golven","Verbod golfslag te veroorzaken","Zwemzone"],a:1,x:"Doorgestreepte golven = verbod om golfslag (hekgolven) te veroorzaken. Pas je snelheid aan."},
+{id:"2.1.09",d:1,o:"R",t:"dagtekens",q:"Een schip voert overdag één zwarte bol voorin. Wat betekent dat?",
+ fig:{f:"shapes",s:["ball"]},c:["Het schip ligt voor anker","Het schip is niet onder bevel","Het schip vervoert gevaarlijke stoffen"],a:0,x:"Eén zwarte bol = voor anker. Twee bollen = niet onder bevel. Drie bollen = aan de grond."},
+{id:"2.1.10",d:1,o:"R",t:"dagtekens",q:"Een binnenschip voert één blauwe kegel met de punt naar beneden. Wat betekent dat?",
+ fig:{f:"shapes",s:["cone-down"],color:"blue"},c:["Het vervoert brandbare stoffen","Het vervoert ontplofbare stoffen","Het is een politievaartuig"],a:0,x:"Blauwe kegels = gevaarlijke stoffen: 1 = brandbaar, 2 = schadelijk voor de gezondheid, 3 = ontplofbaar. 's Nachts gebruikt het schip blauwe lichten."},
+{id:"2.1.11",d:1,o:"R",t:"kennis",q:"Wat is de minimumleeftijd voor een Belgisch stuurbrevet?",
+ c:["16 jaar","18 jaar","21 jaar"],a:0,x:"Je moet minstens 16 jaar zijn voor het stuurbrevet; inschrijven voor het theorie-examen kan al vanaf 15 jaar. Een geslaagd theorie-examen blijft 3 jaar geldig voor de aanvraag van het brevet."},
+{id:"2.1.12",d:1,o:"R",t:"kennis",q:"Wanneer mag je een sluis invaren?",
+ c:["Zodra de deuren open zijn","Bij groen licht of op teken van de sluiswachter","Bij rood licht, als er nog plaats is"],a:1,x:"Rood = niet invaren. Groen = invaren toegelaten. Volg altijd de lichten en de aanwijzingen van het sluispersoneel, meer goed vast en zet de motor stil als dat gevraagd wordt."},
+
+{id:"2.1.13",d:1,o:"N",t:"betonning",q:"Op een rivier zie je deze groene, kegelvormige ton. Wat geeft ze aan?",
+ fig:{f:"buoy",k:"green"},c:["De rechterzijde van het vaarwater (stroomafwaarts gezien)","De linkerzijde van het vaarwater (stroomafwaarts gezien)","Een ankerplaats"],a:1,x:"Binnenwateren: rood = rechterzijde, groen = linkerzijde van het vaarwater, telkens stroomafwaarts gezien."},
+{id:"2.1.14",d:1,o:"N",t:"tekens",q:"Een bord heeft een rode rand en een rode schuine streep over een symbool. Wat voor teken is het?",
+ c:["Een verbodsteken","Een aanbevelingsteken","Een aanwijzingsteken"],a:0,x:"A-tekens (verbod) hebben een rode rand en, als er een symbool op staat, een rode schuine streep. B-tekens (gebod) hebben een rode rand zonder streep, E-tekens (aanwijzing) zijn blauw."},
+{id:"2.1.15",d:1,o:"N",t:"tekens",q:"Welke soort teken legt een verplichting op, zoals 'stoppen' of 'deze richting volgen'?",
+ c:["A-teken","B-teken","E-teken"],a:1,x:"B = gebodstekens (verplichtingen), bv. B.6 maximumsnelheid. A = verbod, E = aanwijzing of toelating."},
+{id:"2.1.16",d:1,o:"N",t:"reken",q:"Je vaart 15 km stroomopwaarts. Je boot doet 12 km/u door het water en de stroom is 3 km/u. Hoe lang doe je erover?",
+ c:["1 u 15 min","1 u 40 min","2 u"],a:1,x:"Tegen de stroom: 12 − 3 = 9 km/u. Tijd = 15 ÷ 9 = 1,67 uur = 1 u 40 min."},
+{id:"2.1.17",d:1,o:"N",t:"reken",q:"Je boot vaart 10 km/u door het water. De stroom is 3 km/u en je vaart stroomafwaarts. Wat is je snelheid ten opzichte van de oever?",
+ c:["7 km/u","10 km/u","13 km/u"],a:2,x:"Met de stroom mee tel je de stroom op bij je snelheid door het water: 10 + 3 = 13 km/u over de grond."},
+{id:"2.1.18",d:1,o:"N",t:"kennis",q:"Wat ga je bij de tochtplanning op een rivier of kanaal vooraf na?",
+ c:["Enkel de weersvoorspelling","Doorvaarthoogte van bruggen, waterdiepte, sluis- en brugbedieningstijden, afstanden en snelheidsbeperkingen","Enkel de afstand"],a:1,x:"Een goede tochtplanning omvat afstanden, tijd, diepten, doorvaarthoogten, bedieningstijden van sluizen en bruggen, snelheidsbeperkingen en het weer."},
+{id:"2.1.19",d:1,o:"N",t:"reken",q:"Je boot heeft een diepgang van 1,20 m. De kaart vermeldt 1,50 m waterdiepte bij normaal peil. Het water staat vandaag 0,20 m lager. Hoeveel water heb je onder de kiel?",
+ c:["0,10 m","0,30 m","0,50 m"],a:0,x:"Werkelijke diepte = 1,50 − 0,20 = 1,30 m. Onder de kiel = 1,30 − 1,20 = 0,10 m. Dat is te weinig marge: vaar langzaam of kies een andere route."},
+{id:"2.1.20",d:1,o:"N",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"A15"},c:["Zeilen verboden","Zeilen toegelaten","Zeilwedstrijd bezig"],a:0,x:"Doorgestreepte zeilboot met rode rand = verboden voor zeilvaartuigen. Op een blauw bord (E-teken) zou zeilen juist toegelaten zijn."},
+{id:"2.1.21",d:1,o:"N",t:"tekens",q:"Wat betekent dit bord?",
+ fig:{f:"sign",k:"E7"},c:["Meren (vastmaken aan de oever) toegelaten","Meren verboden","Brug in aantocht"],a:0,x:"Blauw bord met een meerpaal = toelating om vast te maken aan de oever. Met rode rand en schuine streep is het een meerverbod."},
+{id:"2.1.22",d:1,o:"N",t:"kennis",q:"Een plaats die 'benedenstrooms' van een brug ligt, ligt …",
+ c:["stroomopwaarts van de brug","stroomafwaarts van de brug","onder de brug"],a:1,x:"Benedenstrooms = stroomafwaarts (richting monding). Bovenstrooms = stroomopwaarts."},
+
+{id:"2.1.23",d:1,o:"V",t:"manoeuvre",q:"Je motorboot heeft één linksdraaiende schroef. Je zet de motor in achteruit bij windstil weer. Wat gebeurt er?",
+ c:["Het hek trekt naar bakboord","Het hek trekt naar stuurboord","De boeg trekt naar stuurboord"],a:1,x:"Een linksdraaiende schroef trekt het hek bij achteruitvaren naar stuurboord. Bij een rechtsdraaiende schroef is dat naar bakboord."},
+{id:"2.1.24",d:1,o:"V",t:"manoeuvre",q:"Welke landvast voorkomt dat je boot langs de kade naar voren schuift?",
+ c:["De voorspring","De achterspring","De achterlijn"],a:0,x:"De voorspring loopt van het voorschip naar achteren naar de wal. Schuift de boot naar voren, dan komt die lijn op spanning. De achterspring loopt van het achterschip naar voren en houdt de boot tegen als die naar achteren wil."},
+{id:"2.1.25",d:1,o:"V",t:"brand",q:"De branddriehoek bestaat uit brandstof, warmte (ontbrandingstemperatuur) en …",
+ c:["stikstof","zuurstof","koolstofdioxide"],a:1,x:"Brand heeft brandstof, warmte en zuurstof nodig. Blussen = één van de drie wegnemen: afkoelen (water), zuurstof afsluiten (deken, CO₂, schuim) of de brandstof wegnemen (kraan dicht)."},
+{id:"2.1.26",d:1,o:"V",t:"brand",q:"Er is brand in een elektrisch schakelbord. Welk blusmiddel gebruik je het best?",
+ c:["Water","CO₂-blusser","Een emmer zand uit de bilge"],a:1,x:"CO₂ geleidt geen stroom en laat geen resten na. Water geleidt stroom. Schakel indien mogelijk eerst de stroom uit."},
+{id:"2.1.27",d:1,o:"V",t:"techniek",q:"Welke anode gebruik je op een boot die in zout water vaart?",
+ c:["Zink (of aluminium)","Magnesium","Koper"],a:0,x:"In zout water: zink of aluminium. In zoet water: magnesium. Vervang een anode als ze grotendeels (ongeveer de helft) weggevreten is."},
+{id:"2.1.28",d:1,o:"V",t:"ehbo",q:"Je reanimeert een drenkeling die niet normaal ademt. Wat doe je anders dan bij een gewone reanimatie?",
+ c:["Je begint met 5 beademingen","Je geeft enkel borstcompressies","Je wacht tot het water uit de longen is gelopen"],a:0,x:"Bij een drenkeling is zuurstoftekort de oorzaak. Daarom begin je met 5 beademingen en ga je daarna verder met 30 compressies : 2 beademingen."},
+{id:"2.1.29",d:1,o:"V",t:"ehbo",q:"Iemand in de kajuit heeft hoofdpijn, is duizelig en misselijk terwijl de verwarming of de motor draait. Waaraan denk je eerst?",
+ c:["Zeeziekte","Koolmonoxidevergiftiging","Een zonnesteek"],a:1,x:"CO is kleur- en geurloos en ontstaat bij onvolledige verbranding (motor, verwarming, kooktoestel). Breng de persoon naar buiten in frisse lucht, ventileer, zet de bron af en bel hulp."},
+{id:"2.1.30",d:1,o:"V",t:"techniek",q:"Er komt geen koelwater meer uit het controlegaatje van je buitenboordmotor. Wat doe je?",
+ c:["Gewoon verder varen","Motor stoppen en de koelwaterinlaat en de impeller (waterpomp) controleren","Het toerental verhogen zodat er meer water komt"],a:1,x:"Zonder koelwater raakt de motor snel oververhit. Meestal is de inlaat verstopt of de impeller (het rubberen schoepenwiel van de waterpomp) versleten."},
+
+/* ===== EXAMEN 2 · DEEL 2 · AANVULLING ALGEMEEN ===== */
+{id:"2.2.01",d:2,o:"R",t:"lichten",q:"Je ziet op zee 's nachts deze lichten (vooraanzicht). Wat voor schip is dat?",
+ fig:{f:"lights",view:"Vooraanzicht",L:[[100,34,"g"],[100,56,"w"],[82,96,"g"],[118,96,"r"]]},
+ c:["Een trawler (sleepnetvisser), varend","Een loodsvaartuig in dienst","Een schip met beperkte manoeuvreerbaarheid"],a:0,x:"Groen boven wit (rondom schijnend) = trawler. Rood boven wit = andere visser ('rood boven wit, visser zit'). De zijlichten tonen dat hij vaart loopt."},
+{id:"2.2.02",d:2,o:"R",t:"lichten",q:"Een zeeschip toont, naast zijn gewone lichten, drie rode rondom schijnende lichten boven elkaar. Wat betekent dat?",
+ fig:{f:"lights",view:"Zijaanzicht (stuurboordzijde)",L:[[70,30,"w"],[150,50,"w"],[110,40,"r"],[110,58,"r"],[110,76,"r"],[146,92,"g"]],hull:"side"},
+ c:["Het schip is niet onder bevel","Het schip is beperkt door zijn diepgang","Het schip is aan de grond"],a:1,x:"Drie rode lichten boven elkaar = beperkt door diepgang (overdag: een zwarte cilinder). Twee rode lichten = niet onder bevel."},
+{id:"2.2.03",d:2,o:"R",t:"dagtekens",q:"Welk schip voert overdag dit teken?",
+ fig:{f:"shapes",s:["cone-down","cone-up"]},c:["Een schip dat vist","Een schip dat sleept","Een zeilschip op motor"],a:0,x:"Twee kegels met de punten naar elkaar ('zandloper') = vissend schip. Eén kegel met de punt naar beneden = zeilschip dat ook zijn motor gebruikt."},
+{id:"2.2.04",d:2,o:"R",t:"dagtekens",q:"Een zeeschip voert overdag een zwarte cilinder. Wat betekent dat?",
+ fig:{f:"shapes",s:["cylinder"]},c:["Beperkt door diepgang","Voor anker","Sleept een lange sleep"],a:0,x:"Cilinder = beperkt door diepgang ('kan niet van de geul af'). Een sleep langer dan 200 m herken je overdag aan een ruit."},
+{id:"2.2.05",d:2,o:"R",t:"lichten",q:"Op zee zie je naast de gewone lichten van een motorschip een geel rondom schijnend flikkerlicht. Wat is dat?",
+ fig:{f:"lights",view:"Vooraanzicht",L:[[100,26,"y"],[100,50,"w"],[82,96,"g"],[118,96,"r"]]},
+ c:["Een loodsvaartuig","Een luchtkussenvaartuig (hovercraft) dat zweeft","Een politievaartuig"],a:1,x:"Een luchtkussenvaartuig dat zonder waterverplaatsing vaart, toont bovenop zijn motorschiplichten een geel rondom schijnend flikkerlicht. Loodsen: wit boven rood."},
+{id:"2.2.06",d:2,o:"R",t:"geluid",q:"Welk mistsein geeft een zeilschip dat vaart, bij beperkt zicht?",
+ c:["Eén lange stoot om de 2 minuten","Eén lange en twee korte stoten om de 2 minuten","Snel luiden met de klok"],a:1,x:"Lang–kort–kort (ten hoogste om de 2 minuten) geven o.a. zeilschepen, schepen die niet onder bevel zijn, beperkt manoeuvreerbare, vissende en slepende schepen. Een motorschip met vaart geeft één lange stoot."},
+{id:"2.2.07",d:2,o:"R",t:"voorrang",q:"Op zee naderen twee zeilschepen elkaar. A krijgt de wind over stuurboord, B over bakboord. Wie heeft voorrang?",
+ fig:{f:"sit",water:"sea",wind:0,boats:[{l:"A",k:"sail",x:250,y:160,h:300},{l:"B",k:"sail",x:110,y:160,h:60}]},
+ c:VR,a:0,x:"IAR regel 12: wind aan verschillende kanten → het schip met de wind over bakboord wijkt uit. Dat is B."},
+{id:"2.2.08",d:2,o:"R",t:"voorrang",q:"Op open zee (geen nauw vaarwater, niemand loopt op) kruisen een motorboot A en een zeilboot B die enkel zeilt. Wie heeft voorrang?",
+ fig:{f:"sit",water:"sea",wind:0,boats:[{l:"A",k:"motor",x:110,y:165,h:0},{l:"B",k:"sail",x:260,y:70,h:270}]},
+ c:VR,a:1,x:"IAR regel 18: een motorschip wijkt uit voor een zeilschip, behalve in een nauw vaarwater of verkeersscheidingsstelsel, of als het zeilschip oploopt."},
+{id:"2.2.09",d:2,o:"R",t:"kennis",q:"Een naderend schip blijft over een tijdje in (nagenoeg) dezelfde kompaspeiling staan en komt dichterbij. Wat betekent dat?",
+ c:["Er is aanvaringsgevaar","Het schip vaart van je weg","Er is geen gevaar zolang je het schip ziet"],a:0,x:"IAR regel 7: als de kompaspeiling van een naderend schip niet merkbaar verandert, bestaat er aanvaringsgevaar. Zelfs als de peiling wel verandert, kan dat bij grote schepen of op korte afstand nog altijd het geval zijn."},
+{id:"2.2.10",d:2,o:"R",t:"kennis",q:"Een schip toont deze seinvlag (geel en zwart, in vier vakken). Wat betekent ze?",
+ fig:{f:"flag",k:"L"},c:["Stop je schip onmiddellijk","Ik heb een loods aan boord","Ik heb een duiker onder water"],a:0,x:"Seinvlag L = 'Stop uw schip onmiddellijk'. Vlag A (wit-blauw) = duiker onder water, vlag H (wit-rood) = loods aan boord."},
+
+{id:"2.2.11",d:2,o:"N",t:"betonning",q:"Wat betekent deze boei?",
+ fig:{f:"buoy",k:"W"},c:["Veilig vaarwater ten westen: passeer aan de westzijde","Veilig vaarwater ten oosten","Alleenliggend gevaar"],a:0,x:"Westkardinaal: geel–zwart–geel, kegels met de punten naar elkaar ('wijnglas' = west). Licht: 9 flitsen."},
+{id:"2.2.12",d:2,o:"N",t:"betonning",q:"Wat betekent deze boei?",
+ fig:{f:"buoy",k:"iso"},c:["Een alleenliggend gevaar met rondom bevaarbaar water","Midden van het vaarwater (veilig water)","Een bijzondere markering (zone voor waterski, kabel …)"],a:0,x:"Zwart-rood-zwart met twee zwarte bollen = alleenliggend gevaar. Je kan er rondom omheen, maar niet over. Licht: wit Fl(2)."},
+{id:"2.2.13",d:2,o:"N",t:"betonning",q:"Wat betekent deze boei?",
+ fig:{f:"buoy",k:"safe"},c:["Veilig vaarwater (bv. midden van de geul of aanloopboei)","Wrak","Gevaar aan bakboord"],a:0,x:"Rood-wit verticaal gestreept met één rode bol = veilig vaarwater (midden van het vaarwater of aanloopboei). Licht: wit isofase, occulterend, één lange flits of morse A."},
+{id:"2.2.14",d:2,o:"N",t:"betonning",q:"Een boei toont het lichtkarakter Q(3). Welke boei is dat?",
+ c:["Noordkardinaal","Oostkardinaal","Westkardinaal"],a:1,x:"Oost = 3 flitsen (zoals 3 uur op een klok). Zuid = 6 + lange flits, west = 9, noord = onafgebroken."},
+{id:"2.2.15",d:2,o:"N",t:"reken",q:"Kompaskoers 060°. Met het kompas peil je een vuurtoren op 086°. Deviatie 4° O, variatie 3° W. Wat is de ware peiling van de vuurtoren?",
+ c:["083°","087°","091°"],a:1,x:"Kompaspeiling 086 + 4 (deviatie O) = 090° magnetisch; 090 − 3 (variatie W) = 087° waar. Wind of stroom (verzeiling) spelen geen rol bij een peiling, enkel bij je koers over de grond."},
+{id:"2.2.16",d:2,o:"N",t:"getij",q:"Hoe noem je het hoogteverschil tussen hoogwater en het volgende laagwater?",
+ c:["Getijverschil (verval)","Reductievlak","Diepgang"],a:0,x:"Het getijverschil (verval) is het verschil tussen hoog- en laagwater. Het reductievlak is het referentievlak waartegen de dieptes op de kaart gelden."},
+{id:"2.2.17",d:2,o:"N",t:"getij",q:"Wanneer heb je doodtij?",
+ c:["Rond nieuwe maan","Rond eerste en laatste kwartier","Rond volle maan"],a:1,x:"Bij eerste en laatste kwartier werken zon en maan elkaar tegen: doodtij, met het kleinste getijverschil. Bij nieuwe en volle maan is het springtij."},
+{id:"2.2.18",d:2,o:"N",t:"reken",q:"Je vaart 8 knopen. Hoeveel is dat ongeveer in km/u?",
+ c:["Ongeveer 12,8 km/u","Ongeveer 14,8 km/u","Ongeveer 16 km/u"],a:1,x:"1 knoop = 1 zeemijl per uur = 1,852 km/u. 8 × 1,852 ≈ 14,8 km/u."},
+{id:"2.2.19",d:2,o:"N",t:"meteo",q:"Wat is typisch voor de doortocht van een koufront?",
+ c:["Langdurige lichte regen ver voor het front","Buien in een smalle zone, plotse windkracht, de wind ruimt en daarna opklaringen","Windstilte en mist"],a:1,x:"Bij een koufront schuift koude lucht onder de warme lucht: korte, hevige buien (soms onweer), windstoten, de wind ruimt en daarna wordt het helderder. Langdurige lichte regen hoort bij een warmtefront."},
+{id:"2.2.20",d:2,o:"N",t:"meteo",q:"De wind draait van zuidwest naar west en dan naar noordwest (met de klok mee). Hoe noem je dat?",
+ c:["De wind ruimt","De wind krimpt","De wind neemt af"],a:0,x:"Ruimen = met de klok mee draaien (Z → W → N). Krimpen = tegen de klok in. Ezelsbrug: 'krimpen = keren tegen de klok'."},
+
+{id:"2.2.21",d:2,o:"V",t:"nood",q:"Iemand valt overboord. Wat zijn de eerste acties?",
+ c:["Luid 'man overboord' roepen, een reddingsboei werpen en de drenkeling blijven aanwijzen (MOB-knop op de GPS)","Eerst de zeilen strijken en dan rondkijken","Meteen achterna springen"],a:0,x:"Eerst alarm slaan, drijfmiddel werpen, iemand aanduiden die de drenkeling blijft aanwijzen en de positie vastleggen (MOB-knop). Daarna draai je terug met een gecontroleerde manoeuvre."},
+{id:"2.2.22",d:2,o:"V",t:"nood",q:"Welk marifoonkanaal is het internationale nood- en oproepkanaal?",
+ c:["Kanaal 6","Kanaal 16","Kanaal 70 (spraak)"],a:1,x:"Kanaal 16 = nood-, veiligheids- en oproepkanaal (spraak). Kanaal 70 wordt enkel gebruikt voor digitale selectieve oproep (DSC), niet voor spraak."},
+{id:"2.2.23",d:2,o:"V",t:"nood",q:"Wanneer gebruik je de oproep MAYDAY?",
+ c:["Bij elk technisch probleem","Bij ernstig en onmiddellijk gevaar voor het schip of de opvarenden","Om een weerwaarschuwing door te geven"],a:1,x:"MAYDAY = ernstig en onmiddellijk gevaar (zinken, brand, levensgevaar). PAN-PAN = dringend, geen direct levensgevaar. SÉCURITÉ = veiligheidsbericht."},
+{id:"2.2.24",d:2,o:"V",t:"manoeuvre",q:"Hoe breng je het anker correct uit?",
+ c:["Met vaart vooruit het anker overboord gooien","Schip stilleggen met de kop in de wind of stroom, anker laten zakken tot op de bodem, dan langzaam achteruit en ketting uitvieren tot het anker houdt","Het anker vanaf het hek uitgooien en vol gas vooruit"],a:1,x:"Anker niet gooien: laat het zakken tot op de bodem, laat het schip achteruit drijven of varen en vier ketting uit. Controleer met een paar merkpunten of het anker houdt, en voer overdag een ankerbal."},
+{id:"2.2.25",d:2,o:"V",t:"ehbo",q:"Wat helpt het best tegen zeeziekte?",
+ c:["Benedendeks gaan liggen en lezen","In de frisse lucht blijven, de horizon fixeren en eventueel sturen","Veel vet eten"],a:1,x:"Zeeziekte ontstaat door tegenstrijdige signalen van ogen en evenwichtsorgaan. Frisse lucht, naar de horizon kijken, bezig blijven (sturen) en niet benedendeks gaan helpen. Hou de persoon warm en laat hem drinken."},
+{id:"2.2.26",d:2,o:"V",t:"nood",q:"Je moet bij zeegang op het voordek werken. Wat is de belangrijkste veiligheidsmaatregel?",
+ c:["Een harnas dragen en je vastmaken aan een veiligheidslijn (jackline)","Snel lopen zodat je minder lang buiten bent","Alleen gaan zonder iemand te verwittigen"],a:0,x:"Draag een reddingsvest met harnas en clip je vast aan een jackline. Houd 'één hand voor jezelf, één voor het schip' en verwittig de stuurman."},
+{id:"2.2.27",d:2,o:"V",t:"nood",q:"Welk van deze signalen is een officieel noodsein?",
+ c:["Met beide armen zwaaien boven het hoofd","Langzaam en herhaaldelijk de zijwaarts gestrekte armen op en neer bewegen","Met een wit licht knipperen"],a:1,x:"Het langzaam en herhaaldelijk op en neer bewegen van de zijwaarts gestrekte armen is een erkend noodsein (bijlage IV van de IAR), net als rode fakkels, oranje rook, SOS en MAYDAY."},
+{id:"2.2.28",d:2,o:"V",t:"brand",q:"Brandende diesel of benzine (klasse B) blus je met …",
+ c:["Water","Schuim, poeder of CO₂","Een natte doek en water"],a:1,x:"Klasse B (vloeistoffen): schuim, poeder of CO₂ verstikken het vuur. Water verspreidt brandende vloeistof. Een blusdeken kan bij een kleine pannenbrand."},
+{id:"2.2.29",d:2,o:"V",t:"brand",q:"Waarom heeft een boot met een binnenboord benzinemotor een ventilator (blower) in de motorruimte?",
+ c:["Om de motor te koelen tijdens het varen","Om benzinedampen, die zwaarder zijn dan lucht, af te voeren voor je start","Om het geluid te verminderen"],a:1,x:"Benzinedampen zakken naar de bilge en kunnen ontploffen. Laat de blower enkele minuten draaien voor je start, vooral na het tanken."},
+{id:"2.2.30",d:2,o:"V",t:"ehbo",q:"Iemand verbrandt zijn hand aan de kookplaat. Wat doe je eerst?",
+ c:["De brandwonde 10 à 20 minuten koelen met (lauw) stromend water","Boter of zalf op de wonde smeren","Ijs rechtstreeks op de wonde leggen"],a:0,x:"Koel een brandwonde onmiddellijk en lang genoeg met lauw stromend water. Geen boter of ijs. Bij grote of diepe brandwonden: medische hulp."}
+];
+/* ===== SVG-figuren ===== */
+var FIG = (function(){
+  var C = {water:"#bfe0f5", water2:"#a9d3ef", bank:"#cfe3b4", bank2:"#a9c98a", ink:"#1d2b3a",
+           red:"#d62828", green:"#2a9d4b", yellow:"#f4c20d", black:"#1a1a1a", blue:"#1f5fae", white:"#ffffff", grey:"#6b7a8c"};
+  function rad(d){return d*Math.PI/180;}
+  function arrowHead(x,y,ang,size,color){ // ang in degrees, 0 = up
+    var a=rad(ang), s=size||8;
+    var p1=[x+Math.sin(a)*s, y-Math.cos(a)*s];
+    var p2=[x+Math.sin(a+2.5)*s*0.8, y-Math.cos(a+2.5)*s*0.8];
+    var p3=[x+Math.sin(a-2.5)*s*0.8, y-Math.cos(a-2.5)*s*0.8];
+    return '<polygon points="'+p1+' '+p2+' '+p3+'" fill="'+color+'"/>';
+  }
+  function svg(vb,inner,cls,label){
+    return '<svg class="fig '+(cls||'')+'" viewBox="'+vb+'" role="img" aria-label="'+(label||'figuur')+'" xmlns="http://www.w3.org/2000/svg">'+inner+'</svg>';
+  }
+
+  /* ---------- Voorrangssituaties ---------- */
+  var BOAT = {
+    large:{L:110,W:22}, motor:{L:40,W:16}, sail:{L:38,W:14}, row:{L:30,W:10}
+  };
+  function boatShape(b, wind){
+    var k=b.k, s='';
+    if(k==='large'){
+      s+='<path d="M0,-55 L11,-36 L11,50 L-11,50 L-11,-36 Z" fill="'+C.grey+'" stroke="'+C.ink+'" stroke-width="1.5"/>';
+      for(var i=-28;i<24;i+=13){ s+='<rect x="-7" y="'+i+'" width="14" height="10" fill="#8796a8" stroke="#4d5a69" stroke-width="0.8"/>'; }
+      s+='<rect x="-9" y="33" width="18" height="13" fill="#fff" stroke="'+C.ink+'" stroke-width="1"/>';
+    } else if(k==='motor'){
+      s+='<path d="M0,-20 Q8,-11 8,3 L8,18 L-8,18 L-8,3 Q-8,-11 0,-20 Z" fill="#fff" stroke="'+C.ink+'" stroke-width="1.6"/>';
+      s+='<path d="M-6,-2 Q0,-6 6,-2" fill="none" stroke="'+C.ink+'" stroke-width="1.6"/>';
+      s+='<rect x="-3.5" y="18" width="7" height="6" rx="1.5" fill="'+C.ink+'"/>';
+    } else if(k==='sail'){
+      s+='<path d="M0,-19 Q7,-9 7,4 L6,18 L-6,18 L-7,4 Q-7,-9 0,-19 Z" fill="#fff" stroke="'+C.ink+'" stroke-width="1.6"/>';
+      var rel=((wind - b.h)%360+360)%360;           // waar komt de wind vandaan t.o.v. de boeg
+      var side = (rel>0 && rel<180) ? -1 : 1;       // wind van stuurboord -> giek aan bakboord
+      if(wind===undefined) side=1;
+      var ex=side*16, ey=12;
+      s+='<path d="M0,-6 Q'+(side*13)+',0 '+ex+','+ey+'" fill="none" stroke="'+C.ink+'" stroke-width="5" stroke-linecap="round"/>';
+      s+='<path d="M0,-6 Q'+(side*13)+',0 '+ex+','+ey+'" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>';
+      s+='<circle cx="0" cy="-6" r="2.2" fill="'+C.ink+'"/>';
+    } else if(k==='row'){
+      s+='<line x1="-17" y1="-4" x2="17" y2="-4" stroke="#8a5a2b" stroke-width="2.2" stroke-linecap="round"/>';
+      s+='<path d="M0,-15 Q6,-6 5,4 L4,15 L-4,15 L-5,4 Q-6,-6 0,-15 Z" fill="#e9c58f" stroke="'+C.ink+'" stroke-width="1.5"/>';
+      s+='<ellipse cx="-17" cy="-4" rx="2" ry="4" fill="#8a5a2b"/><ellipse cx="17" cy="-4" rx="2" ry="4" fill="#8a5a2b"/>';
+    }
+    return s;
+  }
+  function sit(f){
+    var W=360,H=220, s='';
+    if(f.water==='sea'){
+      s+='<rect width="'+W+'" height="'+H+'" fill="'+C.water+'"/>';
+      for(var i=0;i<14;i++){var x=(i*67)%W+10, y=(i*41)%H+12; s+='<path d="M'+x+','+y+' q5,-4 10,0 t10,0" fill="none" stroke="'+C.water2+'" stroke-width="1.5"/>';}
+    } else {
+      s+='<rect width="'+W+'" height="'+H+'" fill="'+C.water+'"/>';
+      if(f.water==='narrow'){
+        s+='<path d="M0,0 H360 V30 H235 Q220,30 212,72 H148 Q140,30 125,30 H0 Z" fill="'+C.bank+'" stroke="'+C.bank2+'" stroke-width="2"/>';
+        s+='<path d="M0,220 H360 V190 H235 Q220,190 212,148 H148 Q140,190 125,190 H0 Z" fill="'+C.bank+'" stroke="'+C.bank2+'" stroke-width="2"/>';
+      } else {
+        s+='<rect x="0" y="0" width="'+W+'" height="30" fill="'+C.bank+'"/><line x1="0" y1="30" x2="360" y2="30" stroke="'+C.bank2+'" stroke-width="2"/>';
+        s+='<rect x="0" y="190" width="'+W+'" height="30" fill="'+C.bank+'"/><line x1="0" y1="190" x2="360" y2="190" stroke="'+C.bank2+'" stroke-width="2"/>';
+      }
+    }
+    if(f.cur!==undefined){
+      var a=rad(f.cur), cx=52, cy=(f.water==='sea')?200:178, L=22;
+      var x1=cx-Math.sin(a)*L, y1=cy+Math.cos(a)*L, x2=cx+Math.sin(a)*L, y2=cy-Math.cos(a)*L;
+      s+='<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#1b5d8c" stroke-width="2.5" stroke-dasharray="6 3"/>'+arrowHead(x2,y2,f.cur,9,"#1b5d8c");
+      s+='<text x="'+(cx+30)+'" y="'+(cy+4)+'" font-size="11" fill="#1b5d8c" font-weight="600">stroom</text>';
+    }
+    if(f.wind!==undefined){
+      var to=(f.wind+180)%360, b=rad(to), wx=320, wy=34, wl=18;
+      s+='<circle cx="'+wx+'" cy="'+wy+'" r="27" fill="#fff" fill-opacity=".85" stroke="#9ab" />';
+      var ax1=wx-Math.sin(b)*wl, ay1=wy+Math.cos(b)*wl, ax2=wx+Math.sin(b)*wl, ay2=wy-Math.cos(b)*wl;
+      s+='<line x1="'+ax1+'" y1="'+ay1+'" x2="'+ax2+'" y2="'+ay2+'" stroke="'+C.ink+'" stroke-width="3"/>'+arrowHead(ax2,ay2,to,9,C.ink);
+      s+='<text x="'+wx+'" y="'+(wy+40)+'" font-size="11" text-anchor="middle" fill="'+C.ink+'" font-weight="600">wind</text>';
+    }
+    f.boats.forEach(function(b){
+      var d=BOAT[b.k]; var L=d.L;
+      // koerslijn
+      var a=rad(b.h), sx=b.x+Math.sin(a)*(L/2+4), sy=b.y-Math.cos(a)*(L/2+4), ex=b.x+Math.sin(a)*(L/2+38), ey=b.y-Math.cos(a)*(L/2+38);
+      s+='<line x1="'+sx+'" y1="'+sy+'" x2="'+ex+'" y2="'+ey+'" stroke="'+C.ink+'" stroke-width="1.8" stroke-dasharray="5 4"/>'+arrowHead(ex,ey,b.h,8,C.ink);
+      s+='<g transform="translate('+b.x+','+b.y+') rotate('+b.h+')">'+boatShape(b,f.wind)+'</g>';
+      var lx=b.x-Math.cos(a)*(d.W/2+17), ly=b.y-Math.sin(a)*(d.W/2+17);
+      s+='<circle cx="'+lx+'" cy="'+ly+'" r="11" fill="#fff" stroke="'+C.ink+'" stroke-width="1.6"/><text x="'+lx+'" y="'+(ly+4.5)+'" font-size="13" font-weight="700" text-anchor="middle" fill="'+C.ink+'">'+b.l+'</text>';
+    });
+    return svg("0 0 360 220", s, "fig-sit", "situatieschets");
+  }
+
+  /* ---------- Verkeerstekens (SIGNI) ---------- */
+  function sym(name,col){
+    switch(name){
+      case 'anchor': return '<g fill="none" stroke="'+col+'" stroke-width="6" stroke-linecap="round"><circle cx="60" cy="28" r="6"/><line x1="60" y1="34" x2="60" y2="92"/><line x1="44" y1="44" x2="76" y2="44"/><path d="M34,70 Q38,94 60,94 Q82,94 86,70"/></g><polygon points="28,74 40,72 34,62" fill="'+col+'"/><polygon points="92,74 80,72 86,62" fill="'+col+'"/>';
+      case 'P': return '<text x="60" y="86" font-size="72" font-weight="800" text-anchor="middle" fill="'+col+'" font-family="Arial,Helvetica,sans-serif">P</text>';
+      case 'motor': return '<path d="M26,66 H98 L90,82 H34 Z" fill="'+col+'"/><path d="M46,66 L54,54 H74 L80,66 Z" fill="'+col+'"/><rect x="16" y="60" width="8" height="26" rx="2" fill="'+col+'"/><rect x="20" y="64" width="8" height="6" fill="'+col+'"/>';
+      case 'waves': return '<g fill="none" stroke="'+col+'" stroke-width="6" stroke-linecap="round"><path d="M22,50 q10,-12 19,0 t19,0 t19,0 t19,0"/><path d="M22,76 q10,-12 19,0 t19,0 t19,0 t19,0"/></g>';
+      case 'sail': return '<path d="M32,84 H90 L82,96 H40 Z" fill="'+col+'"/><line x1="60" y1="20" x2="60" y2="84" stroke="'+col+'" stroke-width="3"/><path d="M63,22 V78 H90 Z" fill="'+col+'"/><path d="M57,30 V78 H36 Z" fill="'+col+'"/>';
+      case 'bollard': return '<rect x="50" y="46" width="20" height="44" fill="'+col+'"/><rect x="40" y="36" width="40" height="12" rx="5" fill="'+col+'"/><rect x="34" y="88" width="52" height="8" fill="'+col+'"/><path d="M70,58 Q90,60 98,78" fill="none" stroke="'+col+'" stroke-width="4"/>';
+    }
+    return '';
+  }
+  var SIGN = {
+    A6:{t:'A',s:'anchor'}, A7:{t:'A',s:'bollard'}, A5:{t:'A',s:'P'}, A9:{t:'A',s:'waves'}, A12:{t:'A',s:'motor'}, A15:{t:'A',s:'sail'},
+    E5:{t:'E',s:'P'}, E6:{t:'E',s:'anchor'}, E7:{t:'E',s:'bollard'}, E18:{t:'E',s:'sail'},
+    B6:{t:'B'}
+  };
+  function sign(f){
+    var d=SIGN[f.k], s='';
+    if(d.t==='E'){
+      s+='<rect x="4" y="4" width="112" height="112" rx="6" fill="'+C.blue+'"/><rect x="9" y="9" width="102" height="102" rx="3" fill="none" stroke="#fff" stroke-width="2"/>';
+      s+=sym(d.s,'#fff');
+    } else {
+      s+='<rect x="4" y="4" width="112" height="112" rx="6" fill="#fff" stroke="'+C.red+'" stroke-width="10"/>';
+      if(d.t==='B'){
+        s+='<text x="60" y="82" font-size="56" font-weight="800" text-anchor="middle" fill="'+C.black+'" font-family="Arial,Helvetica,sans-serif">'+(f.n||'')+'</text>';
+      } else {
+        s+=sym(d.s,C.black);
+        s+='<line x1="12" y1="12" x2="108" y2="108" stroke="'+C.red+'" stroke-width="9"/>';
+      }
+    }
+    return svg("0 0 120 120", s, "fig-sign", "verkeersteken");
+  }
+
+  /* ---------- Dagtekens ---------- */
+  function shape(t,cx,cy,col){
+    var r=17;
+    if(t==='ball') return '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+col+'"/>';
+    if(t==='diamond') return '<polygon points="'+cx+','+(cy-20)+' '+(cx+16)+','+cy+' '+cx+','+(cy+20)+' '+(cx-16)+','+cy+'" fill="'+col+'"/>';
+    if(t==='cone-up') return '<polygon points="'+cx+','+(cy-18)+' '+(cx+18)+','+(cy+16)+' '+(cx-18)+','+(cy+16)+'" fill="'+col+'"/>';
+    if(t==='cone-down') return '<polygon points="'+cx+','+(cy+18)+' '+(cx+18)+','+(cy-16)+' '+(cx-18)+','+(cy-16)+'" fill="'+col+'"/>';
+    if(t==='cylinder') return '<rect x="'+(cx-14)+'" y="'+(cy-22)+'" width="28" height="44" fill="'+col+'"/>';
+    return '';
+  }
+  function shapes(f){
+    var n=f.s.length, col=(f.color==='blue')?C.blue:C.black, H=50+n*46, s='';
+    s+='<rect width="140" height="'+H+'" fill="#e8f3fb"/>';
+    s+='<line x1="70" y1="6" x2="70" y2="'+(H-6)+'" stroke="#7a8794" stroke-width="2"/>';
+    f.s.forEach(function(t,i){ s+=shape(t,70,34+i*46,col); });
+    return svg("0 0 140 "+H, s, "fig-shapes", "dagtekens");
+  }
+
+  /* ---------- Lichten ---------- */
+  var LC={w:"#fffbe6", r:"#ff3b30", g:"#2ee66b", y:"#ffd60a"};
+  function lights(f){
+    var s='<defs><filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+    s+='<rect width="200" height="140" fill="#0b1626"/>';
+    for(var i=0;i<18;i++){ s+='<circle cx="'+((i*53)%200)+'" cy="'+((i*29)%60+4)+'" r="0.8" fill="#cfd8e3" opacity=".6"/>'; }
+    s+='<rect x="0" y="112" width="200" height="28" fill="#0f2238"/>';
+    if(f.hull==='side'){ s+='<path d="M40,108 H160 L170,96 H34 Z" fill="#16273c"/><rect x="50" y="84" width="34" height="12" fill="#16273c"/><line x1="70" y1="30" x2="70" y2="96" stroke="#1c3049" stroke-width="2"/><line x1="110" y1="40" x2="110" y2="96" stroke="#1c3049" stroke-width="2"/><line x1="150" y1="50" x2="150" y2="96" stroke="#1c3049" stroke-width="2"/>'; }
+    else { s+='<path d="M70,110 L80,92 H120 L130,110 Z" fill="#16273c"/><line x1="100" y1="16" x2="100" y2="92" stroke="#1c3049" stroke-width="2"/>'; }
+    f.L.forEach(function(l){
+      var c=LC[l[2]]; var blink=(l[2]==='y')?' class="blink"':'';
+      s+='<circle'+blink+' cx="'+l[0]+'" cy="'+l[1]+'" r="5" fill="'+c+'" filter="url(#glow)"/>';
+    });
+    s+='<text x="8" y="132" font-size="10" fill="#9fb2c8">'+(f.view||'')+'</text>';
+    return svg("0 0 200 140", s, "fig-lights", "lichten bij nacht");
+  }
+
+  /* ---------- Boeien ---------- */
+  function pillar(id,bands,vertical){
+    // bands: array kleuren van boven naar onder (of links->rechts als vertical)
+    var s='<clipPath id="'+id+'"><path d="M64,62 H96 L108,148 H52 Z"/></clipPath><g clip-path="url(#'+id+')">';
+    var n=bands.length;
+    if(vertical){ for(var i=0;i<n;i++){ s+='<rect x="'+(50+i*(60/n))+'" y="60" width="'+(60/n+0.5)+'" height="90" fill="'+bands[i]+'"/>'; } }
+    else { for(var j=0;j<n;j++){ s+='<rect x="50" y="'+(62+j*(86/n))+'" width="60" height="'+(86/n+0.5)+'" fill="'+bands[j]+'"/>'; } }
+    s+='</g><path d="M64,62 H96 L108,148 H52 Z" fill="none" stroke="'+C.ink+'" stroke-width="1.5"/>';
+    return s;
+  }
+  function cone(dir,cy,col){ // dir 'up'|'down'
+    if(dir==='up') return '<polygon points="80,'+(cy-9)+' 91,'+(cy+9)+' 69,'+(cy+9)+'" fill="'+col+'"/>';
+    return '<polygon points="80,'+(cy+9)+' 91,'+(cy-9)+' 69,'+(cy-9)+'" fill="'+col+'"/>';
+  }
+  function buoy(f){
+    var k=f.k, s='<rect width="160" height="190" fill="#e8f3fb"/>';
+    var top='';
+    if(k==='red'){
+      s+='<rect x="55" y="78" width="50" height="72" fill="'+C.red+'" stroke="'+C.ink+'" stroke-width="1.5"/>';
+      s+='<line x1="80" y1="78" x2="80" y2="50" stroke="'+C.ink+'" stroke-width="2"/><rect x="71" y="30" width="18" height="22" fill="'+C.red+'" stroke="'+C.ink+'" stroke-width="1"/>';
+    } else if(k==='green'){
+      s+='<polygon points="80,62 110,150 50,150" fill="'+C.green+'" stroke="'+C.ink+'" stroke-width="1.5"/>';
+      s+='<line x1="80" y1="62" x2="80" y2="46" stroke="'+C.ink+'" stroke-width="2"/><polygon points="80,24 92,46 68,46" fill="'+C.green+'" stroke="'+C.ink+'" stroke-width="1"/>';
+    } else {
+      var B=C.black,Y=C.yellow,R=C.red,Wt=C.white;
+      var map={N:[[B,Y],['up','up']], S:[[Y,B],['down','down']], E:[[B,Y,B],['up','down']], W:[[Y,B,Y],['down','up']]};
+      s+='<line x1="80" y1="62" x2="80" y2="8" stroke="'+C.ink+'" stroke-width="2"/>';
+      if(map[k]){ s+=pillar('cl'+k,map[k][0]); top=cone(map[k][1][0],20,B)+cone(map[k][1][1],44,B); }
+      else if(k==='iso'){ s+=pillar('cliso',[B,R,B]); top='<circle cx="80" cy="18" r="9" fill="'+B+'"/><circle cx="80" cy="42" r="9" fill="'+B+'"/>'; }
+      else if(k==='safe'){ s+=pillar('clsafe',[R,Wt,R,Wt,R,Wt],true); top='<circle cx="80" cy="22" r="11" fill="'+R+'"/>'; }
+      s+=top;
+    }
+    s+='<path d="M0,150 Q20,144 40,150 T80,150 T120,150 T160,150 V190 H0 Z" fill="'+C.water+'"/>';
+    return svg("0 0 160 190", s, "fig-buoy", "boei");
+  }
+
+  /* ---------- Afmeren ---------- */
+  function moor(){
+    var s='<rect width="360" height="200" fill="'+C.water+'"/>';
+    s+='<rect x="0" y="150" width="360" height="50" fill="#b9b9b9"/><line x1="0" y1="150" x2="360" y2="150" stroke="#7d7d7d" stroke-width="3"/>';
+    s+='<text x="180" y="190" text-anchor="middle" font-size="12" fill="#444">kade</text>';
+    s+='<path d="M70,62 H250 Q300,68 318,90 Q300,112 250,118 H70 Q62,90 70,62 Z" fill="#fff" stroke="'+C.ink+'" stroke-width="2"/>';
+    s+='<rect x="120" y="76" width="80" height="28" rx="5" fill="#dfe8f1" stroke="'+C.ink+'"/>';
+    s+='<text x="268" y="94" font-size="10" fill="'+C.ink+'">voor</text><text x="76" y="94" font-size="10" fill="'+C.ink+'">achter</text>';
+    var lines=[ // [x1,y1, x2,y2, nr]
+      [300,104, 345,158, 1],
+      [262,116, 168,158, 2],
+      [96,116, 196,158, 3],
+      [74,106, 22,158, 4]
+    ];
+    lines.forEach(function(l){
+      s+='<line x1="'+l[0]+'" y1="'+l[1]+'" x2="'+l[2]+'" y2="'+l[3]+'" stroke="#a0522d" stroke-width="2.6"/>';
+      s+='<circle cx="'+l[2]+'" cy="'+(l[3]+2)+'" r="5" fill="#333"/>';
+    });
+    var lab=[[333,128,1],[226,128,2],[130,128,3],[40,128,4]];
+    lab.forEach(function(p){ s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="10" fill="#fff" stroke="'+C.ink+'" stroke-width="1.5"/><text x="'+p[0]+'" y="'+(p[1]+4.5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+C.ink+'">'+p[2]+'</text>'; });
+    return svg("0 0 360 200", s, "fig-moor", "afmeerlijnen");
+  }
+
+  /* ---------- Lichtenlijn ---------- */
+  function lead(){
+    var s='<defs><filter id="glow2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>';
+    s+='<rect width="220" height="150" fill="#0b1626"/><rect x="0" y="112" width="220" height="38" fill="#0f2238"/>';
+    s+='<path d="M0,112 Q60,104 110,108 T220,110 V112 H0 Z" fill="#14243a"/>';
+    s+='<line x1="124" y1="40" x2="124" y2="108" stroke="#22344d" stroke-width="3"/><line x1="100" y1="86" x2="100" y2="110" stroke="#22344d" stroke-width="3"/>';
+    s+='<circle cx="124" cy="40" r="5" fill="#fffbe6" filter="url(#glow2)"/><circle cx="100" cy="86" r="5" fill="#fffbe6" filter="url(#glow2)"/>';
+    s+='<text x="134" y="44" font-size="10" fill="#c8d6e5">achterste (hoog)</text><text x="18" y="90" font-size="10" fill="#c8d6e5">voorste (laag)</text>';
+    s+='<text x="8" y="140" font-size="10" fill="#9fb2c8">Zicht recht vooruit</text>';
+    return svg("0 0 220 150", s, "fig-lead", "lichtenlijn");
+  }
+
+  /* ---------- Seinvlag ---------- */
+  function flag(f){
+    var s='<rect width="170" height="120" fill="#e8f3fb"/><line x1="16" y1="8" x2="16" y2="116" stroke="#555" stroke-width="3"/>';
+    if(f.k==='L'){
+      s+='<rect x="18" y="14" width="66" height="45" fill="'+C.yellow+'"/><rect x="84" y="14" width="66" height="45" fill="'+C.black+'"/>';
+      s+='<rect x="18" y="59" width="66" height="45" fill="'+C.black+'"/><rect x="84" y="59" width="66" height="45" fill="'+C.yellow+'"/>';
+      s+='<rect x="18" y="14" width="132" height="90" fill="none" stroke="#333" stroke-width="1"/>';
+    }
+    return svg("0 0 170 120", s, "fig-flag", "seinvlag");
+  }
+
+  function render(f){
+    if(!f) return '';
+    switch(f.f){
+      case 'sit': return sit(f);
+      case 'sign': return sign(f);
+      case 'shapes': return shapes(f);
+      case 'lights': return lights(f);
+      case 'buoy': return buoy(f);
+      case 'moor': return moor(f);
+      case 'lead': return lead(f);
+      case 'flag': return flag(f);
+    }
+    return '';
+  }
+  return {render:render};
+})();
+/* ===== Tab 3: vraagtypes en aanpak ===== */
+var F = function(o){ return FIG.render(o); };
+var TYPES = [
+{t:"voorrang", n:"Voorrangssituaties met tekening", ond:"Reglementen",
+ wat:"Je krijgt een schets met twee schepen (A en B), soms met wind- of stroompijl, en kiest: A heeft voorrang, B heeft voorrang of beide moeten uitwijken. Dit type komt in elk examen meermaals terug.",
+ fig:[{f:"sit",water:"river",cur:90,boats:[{l:"A",k:"large",x:120,y:100,h:90},{l:"B",k:"motor",x:250,y:150,h:330}]}],
+ stappen:[
+  "<b>Waar ben je?</b> Oevers en stroompijl = binnenwater (Algemeen Politiereglement / CEVNI). Open water zonder oevers = zee (Internationale Aanvaringsreglement, IAR/COLREG).",
+  "<b>Wat voor schepen?</b> Bepaal voor A en B: klein (korter dan 20 m) of niet, en hoe het vaart: motor, zeil of spierkracht (roeiboot, kano).",
+  "<b>Gaat er iemand inhalen?</b> Het oplopende schip wijkt altijd uit, welk schip het ook is. Controleer dit eerst.",
+  "<b>Pas de rangorde toe.</b> Binnenwater: klein wijkt voor groot; tussen kleine schepen wijkt het motorschip voor iedereen en de roeiboot voor de zeilboot. Zee: het motorschip wijkt voor zeilers, vissers, en schepen die niet onder bevel of beperkt manoeuvreerbaar zijn.",
+  "<b>Gelijkwaardig?</b> Pas dan de situatieregel toe: recht tegemoet = beide naar stuurboord; kruisen op zee = wie de ander aan stuurboord ziet, wijkt; zeil tegen zeil = bakboordwind wijkt, bij dezelfde wind wijkt de loefwaartse boot; nauwe doorvaart = de opvaarder (tegen de stroom) wacht."],
+ ezel:["<b>Rangorde binnenwater (klein):</b> motor &lt; spierkracht &lt; zeil &lt; groot schip.","<b>Zee, kruisen:</b> zie je zijn <i>rode</i> zijlicht (zijn bakboord), dan staat hij aan jouw stuurboord: jij wijkt.","<b>Zeil:</b> 'Bakboordwind en loef wijken.'"],
+ val:["'Beide moeten uitwijken' is enkel juist bij gelijkwaardige schepen die recht op elkaar af varen.","Een zeilboot die ook zijn motor gebruikt, is een motorschip (kegel met de punt naar beneden).","Kijk goed naar de pijlen: de stippellijn is de koers, de pijl in de cirkel is de wind (waar hij naartoe waait)."]},
+
+{t:"tekens", n:"Verkeerstekens (borden)", ond:"Reglementen / Navigatie",
+ wat:"Een bord langs de vaarweg: wat betekent het? Soms wordt ook gevraagd naar de soort teken (verbod, gebod, aanwijzing).",
+ fig:[{f:"sign",k:"A6"},{f:"sign",k:"B6",n:"12"},{f:"sign",k:"E6"}],
+ stappen:[
+  "<b>Lees eerst kleur en rand</b>, dan pas het symbool. Zo weet je al of het om een verbod, een verplichting of een toelating gaat.",
+  "<b>Rode rand + rode schuine streep</b> = A-teken: verbod.",
+  "<b>Rode rand, geen streep</b> = B-teken: gebod of verplichting (bv. maximumsnelheid in km/u, geluidssein geven).",
+  "<b>Blauw bord met wit symbool</b> = E-teken: aanwijzing of toelating (ankeren, ligplaats, meren, zeilen toegelaten …).",
+  "<b>Lees nu het symbool</b> en combineer: doorgestreept anker = ankeren verboden, blauw anker = ankeren toegelaten."],
+ ezel:["A = Afgesloten (verbod), B = Bevel (gebod), C = beperkingen (diepte, hoogte, breedte), D = aanbeveling, E = Extra info / toegelaten.","Op de binnenwateren: <b>rood = rechterzijde</b>, <b>groen = linkerzijde</b> van het vaarwater, telkens stroomafwaarts gezien."],
+ val:["Hetzelfde symbool bestaat in een rode en een blauwe versie. Het tegenovergestelde antwoord staat er dus bijna altijd tussen.","Een getal op een bord met rode rand is een maximum, geen minimum."]},
+
+{t:"lichten", n:"Navigatielichten 's nachts", ond:"Reglementen (vooral deel 2: zee)",
+ wat:"Een donkere tekening met gekleurde lichten (voor-, zij- of achteraanzicht). Je moet zeggen welk schip het is, wat het doet en soms welke kant je ziet.",
+ fig:[{f:"lights",view:"Vooraanzicht",L:[[100,34,"w"],[100,56,"r"],[82,96,"g"],[118,96,"r"]]},{f:"lights",view:"Vooraanzicht",L:[[100,34,"r"],[100,58,"r"],[82,96,"g"],[118,96,"r"]]}],
+ stappen:[
+  "<b>Zoek eerst de zijlichten.</b> Groen én rood = het schip komt recht op je af. Enkel rood = je ziet zijn bakboordzijde: hij vaart van rechts naar links voor je langs. Enkel groen = je ziet zijn stuurboordzijde: hij vaart van links naar rechts. Enkel wit en laag = heklicht: je zit achter hem.",
+  "<b>Kijk dan naar de rondom schijnende lichten boven elkaar</b>: die vertellen wát het schip is of doet.",
+  "<b>Zijlichten aan = vaart door het water.</b> Geen zijlichten bij een statussein = het schip ligt stil.",
+  "<b>Witte toplichten</b> wijzen op een motorschip; twee toplichten (achterste hoger) = langer dan 50 m."],
+ tabel:[["wit boven rood","loodsvaartuig in dienst"],["rood boven wit","vissend schip (geen trawler)"],["groen boven wit","trawler"],["rood boven rood","niet onder bevel"],["rood – wit – rood","beperkt in manoeuvreerbaarheid"],["3× rood","beperkt door diepgang"],["geel flikkerlicht","luchtkussenvaartuig"],["2 rondom wit + 2 rood boven elkaar","aan de grond (ankerlichten + 2× rood)"]],
+ ezel:["'Wit boven rood, loods in de boot.'","'Rood boven wit, visser in zicht.' Groen boven wit = trawler.","'Rood over rood, de kapitein is dood': niet onder bevel."],
+ val:["Lichten van een vooraanzicht zijn gespiegeld: het groene stuurboordlicht van een naderend schip zie je aan jóuw linkerkant.","Een zeilschip op motor voert de lichten van een motorschip (dus met toplicht)."]},
+
+{t:"dagtekens", n:"Dagtekens (bollen, kegels, cilinder)", ond:"Reglementen",
+ wat:"Zwarte (of blauwe) vormen in de mast: bol, kegel, ruit, cilinder. Wat betekent de combinatie?",
+ fig:[{f:"shapes",s:["ball","diamond","ball"]},{f:"shapes",s:["cone-down","cone-up"]},{f:"shapes",s:["cone-down","cone-down","cone-down"],color:"blue"}],
+ stappen:[
+  "<b>Tel en benoem de vormen van boven naar onder.</b>",
+  "<b>Koppel aan het nachtsein</b>: een rood rondom licht hoort bij een bol, een wit licht bij een ruit. Zo vind je veel combinaties terug (rood-wit-rood = bol-ruit-bol).",
+  "<b>Blauwe kegels</b> horen bij gevaarlijke stoffen op binnenschepen: het aantal kegels bepaalt de afstand die je bij het afmeren moet bewaren."],
+ tabel:[["1 bol","voor anker"],["2 bollen","niet onder bevel"],["3 bollen","aan de grond"],["bol – ruit – bol","beperkt manoeuvreerbaar"],["cilinder","beperkt door diepgang"],["2 kegels punt aan punt","vissend schip"],["kegel punt omlaag","zeilschip dat ook de motor gebruikt"],["ruit","sleep langer dan 200 m"],["1 / 2 / 3 blauwe kegels","brandbaar / gezondheidsschadelijk / ontplofbaar → 10 / 50 / 100 m afstand"]],
+ ezel:["Hoe meer bollen, hoe erger: anker → niet onder bevel → aan de grond.","Twee kegels punt aan punt lijken op een zandloper of een visnet: vissen."],
+ val:["Drie bollen boven elkaar = aan de grond. Drie bollen in een driehoek (top + uiteinden van de ra) = mijnenveger.","Kegel punt omlaag (zeilschip op motor) ≠ kegel punt omhoog."]},
+
+{t:"geluid", n:"Geluidsseinen", ond:"Reglementen",
+ wat:"Een reeks korte en lange stoten: wat betekent het sein, of welk sein moet je geven? Op zee ook mistseinen.",
+ stappen:[
+  "<b>Manoeuvreerseinen (korte stoten ≈ 1 s):</b> tel de korte stoten.",
+  "<b>Mistseinen (lange stoten):</b> bepaal eerst of het schip vaart loopt en of het een 'gewoon' motorschip is.",
+  "<b>Lees de vraag goed</b>: 'welk sein geef je' of 'wat betekent het sein' vragen naar de twee kanten van dezelfde tabel."],
+ tabel:[["1 kort","ik wend naar stuurboord"],["2 kort","ik wend naar bakboord"],["3 kort","mijn schroef slaat achteruit"],["4 kort (binnenwater)","ik ben niet in staat te manoeuvreren"],["reeks zeer korte (binnenwater)","gevaar voor aanvaring"],["mist: 1 lang / 2 min","motorschip met vaart"],["mist: 2 lang / 2 min","motorschip zonder vaart"],["mist: lang-kort-kort","zeilschip, visser, niet onder bevel, beperkt manoeuvreerbaar, sleper"]],
+ ezel:["1 = één arm naar rechts (stuurboord), 2 = twee keer naar links (bakboord), 3 = 'terug, terug, terug'."],
+ val:["Lang-kort-kort is géén noodsein, maar een mistsein voor 'bijzondere' schepen."]},
+
+{t:"betonning", n:"Betonning, boeien en lichtenlijnen", ond:"Navigatie",
+ wat:"Een tekening van een boei of ton (kleur, vorm, topteken) of een lichtkarakter. Waar ligt het veilige water, aan welke kant passeer je?",
+ fig:[{f:"buoy",k:"N"},{f:"buoy",k:"E"},{f:"buoy",k:"S"},{f:"buoy",k:"W"}],
+ fig2:[{f:"buoy",k:"red"},{f:"buoy",k:"green"},{f:"buoy",k:"iso"},{f:"buoy",k:"safe"}],
+ stappen:[
+  "<b>Binnenwater of zee?</b> Binnenwater: rood = rechterzijde, groen = linkerzijde van het vaarwater (stroomafwaarts gezien). Zee (IALA A): bij het binnenvaren vanuit zee hou je rood aan bakboord en groen aan stuurboord.",
+  "<b>Kardinale boei? Kijk naar de twee kegels.</b> Beide omhoog = noord, beide omlaag = zuid, voet tegen voet = oost, punt tegen punt = west. De punten wijzen naar de zwarte band(en). Het veilige water ligt aan de kant van de naam.",
+  "<b>Lichtkarakter:</b> denk aan een klok. Oost = 3 flitsen, zuid = 6 + een lange flits, west = 9, noord = onafgebroken snel flikkeren.",
+  "<b>Overige:</b> zwart-rood met 2 zwarte bollen = alleenliggend gevaar (Fl(2)); rood-wit verticaal met 1 rode bol = veilig vaarwater; geel met een liggend kruis = bijzondere markering.",
+  "<b>Lichtenlijn:</b> het achterste (hoge) licht verschuift naar de kant waar jij van de lijn afwijkt. Stuur naar het voorste (lage) licht toe tot ze weer boven elkaar staan."],
+ ezel:["Oost = 'Ei' (voet tegen voet), West = 'Wijnglas' (punt tegen punt).","IALA A: 'rood-rechts' geldt bij het uitvaren; bij het binnenvaren is groen rechts."],
+ val:["Rood/groen draait om tussen binnenwater (stroomafwaarts) en zee (binnenvarend). Lees de vaarrichting in de vraag.","Een noordkardinaal passeer je aan de noordzijde, niet de boei 'naar het noorden'."]},
+
+{t:"kennis", n:"Reglementskennis en begrippen", ond:"Reglementen / Navigatie",
+ wat:"Vragen zonder tekening over definities, grenzen en regels: klein schip, brevetplicht, zones, nauw vaarwater, verkeersscheidingsstelsel, linker- en rechteroever …",
+ stappen:[
+  "<b>Herformuleer de vraag</b> in je eigen woorden en bedenk het antwoord vóór je de opties leest.",
+  "<b>Let op het vaargebied</b>: binnenwater, Beneden-Zeeschelde, kusthaven of zee? Een regel van de zee geldt niet zomaar op een kanaal.",
+  "<b>Wantrouw absolute woorden</b> zoals 'altijd', 'nooit', 'elk' in de foute opties, behalve bij echte vaste regels (oplopen wijkt altijd).",
+  "<b>Elimineer</b>: meestal is er één antwoord dat duidelijk fout is. Kies dan tussen de twee overblijvende."],
+ tabel:[["klein schip","korter dan 20 m"],["brevet nodig","sneller dan 20 km/u of romplengte meer dan 15 m"],["beperkt / algemeen","zone 0–1 / zone 0–4 (tot 6 zeemijl)"],["minimumleeftijd","16 jaar (inschrijven examen vanaf 15)"],["linker-/rechteroever","stroomafwaarts kijkend"],["opvaren / afvaren","tegen / met de stroom"],["oplopen (zee)","naderen van meer dan 22,5° achterlijker dan dwars"],["verkeersscheiding oversteken","zo haaks mogelijk"]],
+ val:["15 m (brevetplicht) en 20 m (klein schip) worden vaak door elkaar gehaald.","Linker- en rechteroever hangen niet af van je eigen vaarrichting."]},
+
+{t:"reken", n:"Rekenvragen (tijd, snelheid, kompas, diepte)", ond:"Navigatie",
+ wat:"Kleine berekeningen: hoe lang duurt de tocht, hoe snel vaar je over de grond, past de boot onder de brug, wat is de ware koers?",
+ stappen:[
+  "<b>Schrijf de gegevens op</b> met hun eenheid (km/u, knopen, minuten).",
+  "<b>Snelheid over de grond</b> = snelheid door het water + stroom (mee) of − stroom (tegen).",
+  "<b>Tijd = afstand ÷ snelheid.</b> Zet het decimaal om naar minuten: 0,5 u = 30 min, 0,25 u = 15 min, 0,1 u = 6 min.",
+  "<b>Brug en diepte:</b> hoger water = minder doorvaarthoogte en meer diepte; lager water omgekeerd. Trek daarna je eigen hoogte of diepgang af.",
+  "<b>Kompas → waar:</b> kompaskoers ± deviatie = magnetische koers ± variatie = ware koers. Oost tel je op, west trek je af.",
+  "<b>Controleer</b> of je antwoord logisch is: stroomafwaarts gaat sneller dan stroomopwaarts."],
+ ezel:["K → D → M → V → W (Kompas, Deviatie, Magnetisch, Variatie, Waar): van kompas naar waar 'oost erbij, west eraf'.","1 knoop = 1 zeemijl/u = 1,852 km/u."],
+ val:["Een stroom van 2 km/u op een tocht heen en terug heft zich níet op: tegen de stroom ben je langer onderweg.","Variatie en deviatie in dezelfde richting tel je allebei op of af; in tegengestelde richting compenseren ze elkaar gedeeltelijk."]},
+
+{t:"getij", n:"Getij en zeekaart", ond:"Navigatie (deel 2)",
+ wat:"Springtij, doodtij, getijverschil, de twaalfdenregel en het meten van afstanden op een zeekaart.",
+ stappen:[
+  "<b>Springtij</b> = rond nieuwe en volle maan (groot verschil); <b>doodtij</b> = rond eerste en laatste kwartier (klein verschil).",
+  "<b>Twaalfdenregel</b>: het water stijgt of daalt per uur 1-2-3-3-2-1 twaalfden van het getijverschil. In het 3e en 4e uur gaat het het snelst en is de stroom het sterkst.",
+  "<b>Afstand meten</b>: op de staande rand (breedteschaal), ter hoogte van wat je meet. 1 minuut breedte = 1 zeemijl = 1852 m.",
+  "<b>Dieptes op de kaart</b> gelden ten opzichte van het reductievlak. De werkelijke waterdiepte = kaartdiepte + getijhoogte op dat moment."],
+ ezel:["Springtij heeft niets met de lente te maken: het water 'springt' hoog op bij volle en nieuwe maan."],
+ val:["Meet nooit op de liggende rand (lengteschaal): die stemt niet overeen met zeemijlen."]},
+
+{t:"meteo", n:"Weer", ond:"Navigatie (deel 2)",
+ wat:"Fronten, windrichting, drukgebieden en de taal van de weerberichten.",
+ stappen:[
+  "<b>Buys Ballot</b>: met je rug naar de wind ligt op het noordelijk halfrond de lage druk links (iets voor je), de hoge druk rechts.",
+  "<b>Warmtefront</b>: langzaam dalende barometer, lange periode lichte regen, wind ruimt bij de doortocht. <b>Koufront</b>: korte hevige buien, windstoten, de wind ruimt, daarna opklaringen.",
+  "<b>Ruimen</b> = de wind draait met de klok mee (Z → W → N); <b>krimpen</b> = tegen de klok in.",
+  "<b>Beaufort</b>: vanaf 6 Bft (krachtige wind) wordt het voor kleine boten gevaarlijk. Een snel dalende barometer kondigt slecht weer aan."],
+ ezel:["'Krimpen = keren tegen de klok.'"],
+ val:["Windrichting = de richting waar de wind vandaan komt (een westenwind komt uit het westen)."]},
+
+{t:"manoeuvre", n:"Manoeuvres, aanleggen en ankeren", ond:"Veiligheid en manoeuvres",
+ wat:"Schroefeffect, landvasten, aanleggen op een rivier, ankeren en man-over-boord.",
+ fig:[{f:"moor"}],
+ stappen:[
+  "<b>Schroefeffect</b>: een rechtsdraaiende schroef trekt het hek bij achteruitvaren naar bakboord; linksdraaiend naar stuurboord.",
+  "<b>Landvasten</b>: voorlijn (voor, naar voren), voorspring (voor, naar achteren), achterspring (achter, naar voren), achterlijn (achter, naar achteren). Een spring is genoemd naar waar hij aan boord vastzit.",
+  "<b>Aanleggen</b> op stromend water doe je tegen de stroom in (of tegen de wind als die sterker is): langzaam over de grond en toch stuurbaar.",
+  "<b>Ankeren</b>: kop in de wind of stroom, anker laten zakken (niet gooien), achteruit uitvieren. Ketting minstens 3× de diepte, lijn 5 à 7×.",
+  "<b>Man over boord</b>: roepen, boei werpen, blijven aanwijzen, en stuur naar de kant van de drenkeling zodat je hek en schroef van hem wegdraaien."],
+ ezel:["De voorspring houdt je tegen als je naar vóór wil, de achterspring als je naar achter wil."],
+ val:["'Met de stroom mee aanleggen gaat sneller' klinkt logisch, maar je verliest controle."]},
+
+{t:"techniek", n:"Motor en techniek", ond:"Veiligheid en manoeuvres",
+ wat:"Anodes, koelwater, uitlaatgassen, benzinedampen en onderhoud.",
+ stappen:[
+  "<b>Anodes</b> beschermen metalen onderdelen tegen galvanische corrosie: zink of aluminium in zout water, magnesium in zoet water.",
+  "<b>Koelwater</b>: komt er geen water uit het controlegaatje, stop dan de motor en controleer inlaat en impeller.",
+  "<b>Uitlaatgassen</b>: nagenoeg kleurloos = goed; zwart = slechte verbranding of overbelasting; blauw = olieverbruik.",
+  "<b>Benzine</b>: dampen zijn zwaarder dan lucht. Na het tanken eerst ventileren (blower), ruiken, dan pas starten."],
+ val:["Magnesium in zout water slijt veel te snel; zink in zoet water raakt 'verstikt' en werkt niet meer."]},
+
+{t:"brand", n:"Brand", ond:"Veiligheid en manoeuvres",
+ wat:"Branddriehoek, brandklassen, het juiste blusmiddel en wat je eerst doet.",
+ stappen:[
+  "<b>Bepaal de brandklasse</b>: A vaste stoffen (hout, textiel), B vloeistoffen (benzine, diesel), C gassen, D metalen, F frituurvet.",
+  "<b>Kies het blusmiddel</b>: water (enkel A), schuim (A en B), poeder (A, B, C), CO₂ (B en elektrische installaties), blusdeken (kleine vetbrand).",
+  "<b>Volgorde bij brand aan boord</b>: alarm, motor stoppen en brandstof afsluiten, luiken dicht, blussen aan de basis van de vlammen, met de wind in de rug.",
+  "<b>Voorkomen</b>: ventileren, gasdetector laag in de boot, gaskraan dicht na gebruik."],
+ tabel:[["A – vast","water, schuim, poeder"],["B – vloeistof","schuim, poeder, CO₂"],["C – gas","poeder (eerst gas afsluiten)"],["elektrisch","CO₂ (stroom uit)"],["F – vet","blusdeken, speciaal F-blusser"]],
+ val:["Water op brandende benzine of vet is altijd fout.","Een motorluik openen bij brand geeft het vuur extra zuurstof."]},
+
+{t:"ehbo", n:"EHBO", ond:"Veiligheid en manoeuvres",
+ wat:"Reanimatie, onderkoeling, koolmonoxide, brandwonden en zeeziekte.",
+ stappen:[
+  "<b>Eerst veiligheid</b>: breng jezelf niet in gevaar, roep hulp (112, of kanaal 16 op zee).",
+  "<b>Reanimatie</b>: 30 borstcompressies en 2 beademingen, AED zo snel mogelijk. Bij een drenkeling eerst 5 beademingen.",
+  "<b>Onderkoeling</b>: horizontaal en voorzichtig, droge kleren, inpakken, langzaam opwarmen, niet wrijven, geen alcohol.",
+  "<b>Brandwonde</b>: 10 à 20 minuten koelen met lauw stromend water.",
+  "<b>Hoofdpijn en duizeligheid in de kajuit</b>: denk aan koolmonoxide → frisse lucht."],
+ val:["Opties met 'alcohol', 'wrijven', 'boter' of 'ijs' zijn bij EHBO-vragen bijna altijd fout."]},
+
+{t:"nood", n:"Nood, MOB en veiligheidsmiddelen", ond:"Veiligheid en manoeuvres",
+ wat:"Noodseinen, marifoonoproepen, reddingsvesten, radarreflector en werken aan dek.",
+ stappen:[
+  "<b>Marifoon</b>: MAYDAY = ernstig en onmiddellijk gevaar, PAN-PAN = dringend zonder direct levensgevaar, SÉCURITÉ = veiligheidsbericht. Kanaal 16 is het nood- en oproepkanaal; kanaal 70 enkel voor DSC.",
+  "<b>Noodseinen</b>: rode handfakkel of valschermraket, oranje rook, SOS, MAYDAY, langzaam de zijwaarts gestrekte armen op en neer bewegen.",
+  "<b>Reddingsvesten</b>: 50 N = zwemhulp, 100 N = beschut water, 150 N = zee (draait een bewusteloze op de rug), 275 N = zware omstandigheden.",
+  "<b>Gezien worden</b>: radarreflector zo hoog mogelijk; 's nachts goede lichten."],
+ ezel:["MAYDAY (leven) > PAN-PAN (dringend) > SÉCURITÉ (ter info)."],
+ val:["Een wit stakellicht is geen noodsein, maar trekt de aandacht.","Met beide armen boven het hoofd zwaaien staat niet in de lijst van officiële noodseinen."]}
+];
+
+var GUIDE_INTRO = ''+
+'<section class="card intro">'+
+'<h2>Zo zit het theorie-examen in elkaar</h2>'+
+'<div class="grid2">'+
+'<div><h3>Deel 1 · Beperkt stuurbrevet</h3><table class="tbl"><tr><th>Onderdeel</th><th>Vragen</th><th>Minimum</th></tr>'+
+'<tr><td>Reglementen</td><td>12</td><td>6 (50%)</td></tr><tr><td>Navigatie</td><td>10</td><td>5 (50%)</td></tr><tr><td>Veiligheid en manoeuvres</td><td>8</td><td>4 (50%)</td></tr><tr class="tot"><td>Totaal</td><td>30</td><td>18 (60%)</td></tr></table></div>'+
+'<div><h3>Deel 2 · Aanvulling algemeen</h3><table class="tbl"><tr><th>Onderdeel</th><th>Vragen</th><th>Minimum</th></tr>'+
+'<tr><td>Reglementen</td><td>10</td><td>5 (50%)</td></tr><tr><td>Navigatie</td><td>10</td><td>5 (50%)</td></tr><tr><td>Veiligheid en manoeuvres</td><td>10</td><td>5 (50%)</td></tr><tr class="tot"><td>Totaal</td><td>30</td><td>18 (60%)</td></tr></table></div>'+
+'</div>'+
+'<p>Voor het <b>algemeen stuurbrevet</b> moet je voor beide delen slagen (de examens zijn opbouwend). Je slaagt per deel als je op <b>elk onderdeel minstens 50%</b> en <b>in totaal minstens 60%</b> haalt. Een geslaagd examen blijft 3 jaar geldig voor de aanvraag van het brevet. Er zijn geen minpunten voor een fout antwoord.</p>'+
+'<h3>Algemene aanpak voor elke vraag</h3><ol class="steps">'+
+'<li><b>Lees de vraag twee keer</b>, ook de kleine woorden: <i>klein</i> schip, <i>op zee</i>, <i>GEEN</i>, <i>eerst</i>, <i>minstens</i>.</li>'+
+'<li><b>Bekijk de tekening</b> en zoek de aanwijzingen: oevers of open zee, stroom- en windpijl, lichtkleuren, vormen.</li>'+
+'<li><b>Bedenk zelf het antwoord</b> voor je naar A, B en C kijkt.</li>'+
+'<li><b>Elimineer</b> wat zeker fout is. Opties die gevaarlijk of onlogisch zijn op het water, zijn bijna altijd fout.</li>'+
+'<li><b>Laat nooit een vraag open.</b> Twijfel je, kies dan het antwoord dat het voorzichtigst of het veiligst is.</li></ol>'+
+'</section>';
+(function(){
+"use strict";
+var LET=["A","B","C"];
+var ONDN={R:"Reglementen",N:"Navigatie",V:"Veiligheid en manoeuvres"};
+var DEELN={1:"Deel 1 · Beperkt stuurbrevet",2:"Deel 2 · Aanvulling algemeen"};
+var DEELK={1:"Deel 1 · Beperkt",2:"Deel 2 · Algemeen"};
+var TYPEN={}; TYPES.forEach(function(t){TYPEN[t.t]=t.n;});
+var QBYID={};
+[1,2].forEach(function(n){ EXAMS[n].forEach(function(q){ q.ex=n; QBYID[q.id]=q; }); });
+var ACTIVE={};   // tab -> Quiz
+
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function load(k){try{var v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch(e){return null;}}
+function drop(k){try{localStorage.removeItem(k);}catch(e){}}
+function fmt(sec){sec=sec||0;var m=Math.floor(sec/60),s=sec%60;return m+":"+(s<10?"0":"")+s;}
+
+/* --- vaste (pseudo-willekeurige) volgorde van de antwoorden --- */
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var SALT="b";
+function perm(q){
+  if(q._p) return q._p;
+  var p=[0,1,2];
+  if(!(q.c===VR || /^\d/.test(q.c[0]) || /^Lijn/.test(q.c[0]))){
+    var r=rng(hash(q.id+SALT));
+    for(var i=2;i>0;i--){var j=Math.floor(r()*(i+1));var t=p[i];p[i]=p[j];p[j]=t;}
+  }
+  q._p=p; return p;
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* --- score volgens de FOD-regels --- */
+function score(qs,ans){
+  var res={deel:{},ok:0,n:0};
+  qs.forEach(function(q){
+    var d=res.deel[q.d]||(res.deel[q.d]={ond:{},ok:0,n:0});
+    var o=d.ond[q.o]||(d.ond[q.o]={ok:0,n:0});
+    var good=(ans[q.id]===q.a);
+    o.n++; d.n++; res.n++;
+    if(good){o.ok++; d.ok++; res.ok++;}
+  });
+  Object.keys(res.deel).forEach(function(k){
+    var d=res.deel[k]; d.pass=true;
+    Object.keys(d.ond).forEach(function(o){ var x=d.ond[o]; x.pass=(x.ok*2>=x.n); if(!x.pass) d.pass=false; });
+    d.totPass=(d.ok*10>=d.n*6); if(!d.totPass) d.pass=false;
+  });
+  return res;
+}
+
+/* ================= Quiz ================= */
+function Quiz(el,cfg){
+  this.el=el; this.cfg=cfg; this.st=cfg.state;
+  this.qs=this.st.ids.map(function(id){return QBYID[id];});
+  this.view=this.st.done?"result":"q";
+  this.filter="bad"; this.confirm=false;
+  this.render();
+}
+Quiz.prototype.save=function(){ if(this.cfg.key) store(this.cfg.key,this.st); };
+Quiz.prototype.render=function(){
+  if(this.view==="result") return this.renderResult();
+  if(this.view==="review") return this.renderReview();
+  return this.renderQ();
+};
+Quiz.prototype.answered=function(){var a=this.st.ans,c=0;this.qs.forEach(function(q){if(a[q.id]!==undefined)c++;});return c;};
+Quiz.prototype.optsHtml=function(q,reveal,interactive){
+  var p=perm(q), a=this.st.ans[q.id], h='<div class="opts">';
+  for(var k=0;k<3;k++){
+    var o=p[k], cls="opt";
+    if(reveal){ if(o===q.a) cls+=" ok"; else if(o===a) cls+=" bad"; }
+    else if(o===a) cls+=" sel";
+    h+='<button class="'+cls+'" data-k="'+k+'"'+(interactive?'':' disabled')+'><span class="k">'+LET[k]+'</span><span>'+q.c[o]+'</span></button>';
+  }
+  return h+'</div>';
+};
+Quiz.prototype.explHtml=function(q,withTip){
+  var a=this.st.ans[q.id], good=(a===q.a), un=(a===undefined), p=perm(q), letter=LET[p.indexOf(q.a)];
+  var v= un ? 'Niet beantwoord. Juist antwoord: '+letter : (good ? '✔ Juist' : '✘ Fout. Juist antwoord: '+letter);
+  var h='<div class="expl '+(un?'':(good?'ok':'bad'))+'"><b class="v">'+v+'</b>'+q.x;
+  if(withTip) h+='<div class="tip">Vraagtype: '+TYPEN[q.t]+' · <a data-goto="'+q.t+'">aanpak en ezelsbruggetjes</a></div>';
+  return h+'</div>';
+};
+Quiz.prototype.renderQ=function(){
+  var self=this, st=this.st, qs=this.qs, n=qs.length;
+  if(st.cur>=n) st.cur=n-1;
+  var q=qs[st.cur], a=st.ans[q.id], oefen=(st.mode==="oefen");
+  var reveal=oefen && a!==undefined;
+  var nAns=this.answered();
+  var h='<div class="card">';
+  h+='<div class="qbar"><b>'+this.cfg.title+'</b><span class="badge '+(oefen?'':'ex')+'">'+(oefen?'Oefenmodus':'Examenmodus')+'</span>';
+  if(!oefen) h+='<span class="timer" title="verstreken tijd">⏱ '+fmt(st.elapsed)+'</span>';
+  h+='<span class="sp"></span><span class="muted small">'+nAns+' / '+n+' beantwoord</span>';
+  h+='<div class="prog"><i style="width:'+(100*nAns/n)+'%"></i></div></div>';
+  h+='<div class="row" style="gap:6px;margin:4px 0"><span class="qnum">Vraag '+(st.cur+1)+' / '+n+'</span>';
+  h+='<span class="badge d'+q.d+'">'+DEELK[q.d]+'</span><span class="badge">'+ONDN[q.o]+'</span>';
+  if(oefen||this.cfg.simple) h+='<span class="badge t">'+TYPEN[q.t]+'</span>';
+  if(st.flags[q.id]) h+='<span class="badge ex">gemarkeerd</span>';
+  h+='</div>';
+  h+='<div class="qtext">'+q.q+'</div>';
+  if(q.fig) h+='<div class="figwrap">'+FIG.render(q.fig)+'</div>';
+  h+=this.optsHtml(q,reveal,!reveal);
+  if(reveal) h+=this.explHtml(q,!this.cfg.simple);
+  h+='<div class="qnav"><button class="btn gray" data-act="prev"'+(st.cur===0?' disabled':'')+'>← Vorige</button>';
+  h+='<button class="btn" data-act="next"'+(st.cur===n-1?' disabled':'')+'>Volgende →</button>';
+  if(!oefen) h+='<button class="btn ghost" data-act="flag">'+(st.flags[q.id]?'Markering weg':'⚑ Markeer')+'</button>';
+  h+='<span class="sp"></span>';
+  if(oefen) h+='<button class="btn '+(nAns===n?'':'gray')+'" data-act="finish">'+(nAns===n?'Bekijk resultaat':'Stoppen en resultaat')+'</button>';
+  else h+='<button class="btn warn" data-act="finish">Examen indienen</button>';
+  h+='</div>';
+  if(this.confirm){
+    var open=n-nAns, fl=Object.keys(st.flags).filter(function(k){return st.flags[k];}).length;
+    h+='<div class="resume" style="margin-top:12px">'+(open?'<b>'+open+' vraag/vragen nog niet beantwoord.</b> Een open vraag telt als fout. ':'')+(fl?fl+' vraag/vragen gemarkeerd. ':'')+'Wil je '+(oefen?'stoppen':'indienen')+'? <div class="row" style="margin-top:8px"><button class="btn warn" data-act="really">Ja, '+(oefen?'stop':'indienen')+'</button><button class="btn gray" data-act="cancel">Nee, verder</button></div></div>';
+  }
+  // overzicht
+  h+='<div class="grid-wrap">';
+  var lastD=null;
+  qs.forEach(function(qq,i){
+    if(qq.d!==lastD){ if(lastD!==null) h+='</div>'; h+='<h4>'+DEELN[qq.d]+'</h4><div class="qgrid">'; lastD=qq.d; }
+    var aa=st.ans[qq.id], cls=[];
+    if(aa!==undefined) cls.push(oefen ? (aa===qq.a?'ok':'bad') : 'ans');
+    if(i===st.cur) cls.push('cur');
+    if(st.flags[qq.id]) cls.push('flag');
+    h+='<button class="'+cls.join(' ')+'" data-go="'+i+'" title="'+ONDN[qq.o]+'">'+(i+1)+'</button>';
+  });
+  h+='</div></div>';
+  h+='<div class="row" style="margin-top:14px"><button class="btn gray" data-act="exit">'+(this.cfg.exitLabel||'← Terug')+'</button>';
+  h+='<span class="muted small">Toetsen: A/B/C of 1/2/3 om te antwoorden, ← → om te navigeren.</span></div>';
+  h+='</div>';
+  this.el.innerHTML=h;
+  this.bind();
+};
+Quiz.prototype.choose=function(k){
+  var st=this.st, q=this.qs[st.cur];
+  if(st.mode==="oefen" && st.ans[q.id]!==undefined) return;
+  st.ans[q.id]=perm(q)[k]; this.confirm=false; this.save(); this.renderQ();
+};
+Quiz.prototype.go=function(i){ if(i<0||i>=this.qs.length) return; this.st.cur=i; this.confirm=false; this.save(); this.renderQ(); var c=this.el.querySelector('.card'); if(c && c.getBoundingClientRect().top<0) c.scrollIntoView({block:"start"}); };
+Quiz.prototype.finish=function(){ this.st.done=true; this.st.finishedAt=Date.now(); this.confirm=false; this.view="result"; this.save(); this.render(); this.el.scrollIntoView({block:"start"}); if(this.cfg.onDone) this.cfg.onDone(); };
+Quiz.prototype.bind=function(){
+  var self=this, el=this.el;
+  $$('.opt[data-k]',el).forEach(function(b){ b.onclick=function(){ self.choose(+b.getAttribute('data-k')); }; });
+  $$('[data-go]',el).forEach(function(b){ b.onclick=function(){ self.go(+b.getAttribute('data-go')); }; });
+  $$('[data-goto]',el).forEach(function(b){ b.onclick=function(){ gotoType(b.getAttribute('data-goto')); }; });
+  $$('[data-act]',el).forEach(function(b){ b.onclick=function(){
+    var act=b.getAttribute('data-act'), st=self.st;
+    if(act==="prev") self.go(st.cur-1);
+    else if(act==="next") self.go(st.cur+1);
+    else if(act==="flag"){ st.flags[self.qs[st.cur].id]=!st.flags[self.qs[st.cur].id]; self.save(); self.renderQ(); }
+    else if(act==="finish"){ var open=self.qs.length-self.answered(); var fl=Object.keys(st.flags).some(function(k){return st.flags[k];}); if(open>0 || (fl && st.mode!=="oefen")){ self.confirm=true; self.renderQ(); var r=el.querySelector('.resume'); if(r) r.scrollIntoView({block:"center"}); } else self.finish(); }
+    else if(act==="really") self.finish();
+    else if(act==="cancel"){ self.confirm=false; self.renderQ(); }
+    else if(act==="exit"){ if(self.cfg.onExit) self.cfg.onExit(); }
+    else if(act==="review-all"){ self.filter="all"; self.view="review"; self.render(); }
+    else if(act==="review-bad"){ self.filter="bad"; self.view="review"; self.render(); }
+    else if(act==="result"){ self.view="result"; self.render(); }
+    else if(act==="again"){ if(self.cfg.onAgain) self.cfg.onAgain(); }
+  }; });
+  $$('[data-filter]',el).forEach(function(b){ b.onclick=function(){ self.filter=b.getAttribute('data-filter'); self.renderReview(); }; });
+};
+Quiz.prototype.renderResult=function(){
+  var st=this.st, qs=this.qs, sc=score(qs,st.ans), h='<div class="card">';
+  h+='<div class="qbar"><b>'+this.cfg.title+'</b><span class="badge '+(st.mode==="oefen"?'':'ex')+'">'+(st.mode==="oefen"?'Oefenmodus':'Examenmodus')+'</span>';
+  if(st.mode!=="oefen") h+='<span class="muted small">tijd: '+fmt(st.elapsed)+'</span>';
+  h+='</div><h2>Resultaat</h2>';
+  if(this.cfg.simple){
+    var pct=Math.round(100*sc.ok/sc.n);
+    h+='<div class="verdict '+(sc.ok*10>=sc.n*6?'ok':'bad')+'">'+sc.ok+' / '+sc.n+' juist ('+pct+'%)</div>';
+    h+='<p class="muted">Bij het echte examen moet je per onderdeel minstens 50% en in totaal minstens 60% halen.</p>';
+  } else {
+    var deels=Object.keys(sc.deel).sort(), all=true;
+    deels.forEach(function(k){
+      var d=sc.deel[k]; if(!d.pass) all=false;
+      h+='<h3>'+DEELN[k]+'</h3><table class="tbl"><tr><th>Onderdeel</th><th>Score</th><th>Minimum</th><th style="width:28%"></th><th>Status</th></tr>';
+      ["R","N","V"].forEach(function(o){ var x=d.ond[o]; if(!x) return; var mn=Math.ceil(x.n/2);
+        h+='<tr><td>'+ONDN[o]+'</td><td>'+x.ok+' / '+x.n+'</td><td>'+mn+'</td><td><div class="bar"><i style="width:'+(100*x.ok/x.n)+'%;background:'+(x.pass?'var(--ok)':'var(--bad)')+'"></i></div></td><td class="'+(x.pass?'pass':'fail')+'">'+(x.pass?'≥ 50% ✔':'< 50% ✘')+'</td></tr>'; });
+      var mt=Math.ceil(d.n*0.6);
+      h+='<tr class="tot"><td>Totaal</td><td>'+d.ok+' / '+d.n+' ('+Math.round(100*d.ok/d.n)+'%)</td><td>'+mt+'</td><td><div class="bar"><i style="width:'+(100*d.ok/d.n)+'%;background:'+(d.totPass?'var(--ok)':'var(--bad)')+'"></i></div></td><td class="'+(d.totPass?'pass':'fail')+'">'+(d.totPass?'≥ 60% ✔':'< 60% ✘')+'</td></tr></table>';
+      h+='<div class="verdict '+(d.pass?'ok':'bad')+'">'+(d.pass?'Geslaagd':'Niet geslaagd')+' voor '+(k==="1"?'deel 1 (beperkt stuurbrevet)':'deel 2 (aanvulling algemeen)')+'</div>';
+    });
+    if(deels.length===2) h+='<p><b>'+(all?'Je zou geslaagd zijn voor het theorie-examen algemeen stuurbrevet.':'Voor het algemeen stuurbrevet moet je voor beide delen slagen.')+'</b></p>';
+    // zwakke vraagtypes
+    var tt={}; qs.forEach(function(q){ var x=tt[q.t]||(tt[q.t]={ok:0,n:0}); x.n++; if(st.ans[q.id]===q.a) x.ok++; });
+    var weak=Object.keys(tt).filter(function(t){return tt[t].ok<tt[t].n;}).sort(function(a,b){return (tt[a].ok/tt[a].n)-(tt[b].ok/tt[b].n);}).slice(0,4);
+    if(weak.length){ h+='<h3>Werkpunten</h3><ul class="ez">'; weak.forEach(function(t){ h+='<li>'+TYPEN[t]+': '+tt[t].ok+' / '+tt[t].n+' juist · <a class="lnk" data-goto="'+t+'" style="color:var(--sea);cursor:pointer;text-decoration:underline">aanpak bekijken</a></li>'; }); h+='</ul>'; }
+  }
+  h+='<div class="row" style="margin-top:14px"><button class="btn" data-act="review-bad">Fouten bekijken</button><button class="btn ghost" data-act="review-all">Alle vragen met uitleg</button><span class="sp"></span>';
+  if(this.cfg.onAgain) h+='<button class="btn gray" data-act="again">Opnieuw</button>';
+  h+='<button class="btn gray" data-act="exit">'+(this.cfg.exitLabel||'← Terug')+'</button></div></div>';
+  this.el.innerHTML=h; this.bind();
+};
+Quiz.prototype.renderReview=function(){
+  var self=this, st=this.st, f=this.filter, h='<div class="card"><div class="qbar"><b>'+this.cfg.title+' · overzicht</b><span class="sp"></span><button class="btn gray" data-act="result">← Resultaat</button></div>';
+  var nBad=0; this.qs.forEach(function(q){ if(st.ans[q.id]!==q.a) nBad++; });
+  h+='<div class="review-filter"><button class="btn '+(f==="bad"?'':'gray')+'" data-filter="bad">Fout of open ('+nBad+')</button><button class="btn '+(f==="all"?'':'gray')+'" data-filter="all">Alle ('+this.qs.length+')</button></div>';
+  var shown=0;
+  this.qs.forEach(function(q,i){
+    var a=st.ans[q.id], good=(a===q.a);
+    if(f==="bad" && good) return;
+    shown++;
+    h+='<div class="rv '+(good?'ok':'bad')+'"><div class="row" style="gap:6px"><span class="qnum">Vraag '+(i+1)+'</span><span class="badge d'+q.d+'">'+DEELK[q.d]+'</span><span class="badge">'+ONDN[q.o]+'</span><span class="badge t">'+TYPEN[q.t]+'</span></div>';
+    h+='<div class="qtext">'+q.q+'</div>';
+    if(q.fig) h+='<div class="figwrap">'+FIG.render(q.fig)+'</div>';
+    h+=self.optsHtml(q,true,false)+self.explHtml(q,!self.cfg.simple)+'</div>';
+  });
+  if(!shown) h+='<p class="pass">Geen fouten. Knap!</p>';
+  h+='<div class="row" style="margin-top:12px"><button class="btn gray" data-act="result">← Resultaat</button></div></div>';
+  this.el.innerHTML=h; this.bind();
+};
+
+/* ================= Examentab ================= */
+function ExamTab(n){
+  var el=$('#p-ex'+n), key='sb_ex'+n, cfgKey='sb_cfg'+n;
+  var pref=load(cfgKey)||{scope:"full",mode:"oefen",mix:false};
+  function scopeIds(scope,mix){
+    var d1=EXAMS[n].filter(function(q){return q.d===1;}).map(function(q){return q.id;});
+    var d2=EXAMS[n].filter(function(q){return q.d===2;}).map(function(q){return q.id;});
+    if(mix){ shuffle(d1); shuffle(d2); }
+    return scope==="d1"?d1:(scope==="d2"?d2:d1.concat(d2));
+  }
+  var SC={full:"Volledig algemeen stuurbrevet (deel 1 + 2, 60 vragen)",d1:"Enkel deel 1: beperkt stuurbrevet (30 vragen)",d2:"Enkel deel 2: aanvulling algemeen (30 vragen)"};
+  function startScreen(){
+    ACTIVE['ex'+n]=null;
+    var saved=load(key), h='<div class="card"><h2>Examen '+n+'</h2>';
+    h+='<p class="muted">Opgebouwd zoals het theorie-examen: deel 1 (12 reglementen, 10 navigatie, 8 veiligheid en manoeuvres) en deel 2 (10 / 10 / 10). Elke vraag heeft drie mogelijke antwoorden.</p>';
+    if(saved && saved.ids){
+      var nA=Object.keys(saved.ans||{}).length;
+      if(!saved.done) h+='<div class="resume">Je was bezig: <b>'+SC[saved.scope]+'</b>, '+(saved.mode==="oefen"?'oefenmodus':'examenmodus')+' – '+nA+' / '+saved.ids.length+' beantwoord.<div class="row" style="margin-top:8px"><button class="btn" data-s="resume">Verder gaan</button><button class="btn gray" data-s="discard">Wissen</button></div></div>';
+      else { var qs=saved.ids.map(function(id){return QBYID[id];}), sc=score(qs,saved.ans); h+='<div class="resume">Laatste poging: <b>'+sc.ok+' / '+sc.n+'</b> juist ('+SC[saved.scope]+'). <div class="row" style="margin-top:8px"><button class="btn gray" data-s="resume">Resultaat en uitleg bekijken</button></div></div>'; }
+    }
+    h+='<h3>Wat wil je doen?</h3><div class="choice" data-g="scope">';
+    ["full","d1","d2"].forEach(function(s){ h+='<label class="'+(pref.scope===s?'on':'')+'"><input type="radio" name="sc'+n+'" value="'+s+'"'+(pref.scope===s?' checked':'')+'>'+SC[s]+'</label>'; });
+    h+='</div><h3>Modus</h3><div class="choice" data-g="mode">';
+    h+='<label class="'+(pref.mode==="oefen"?'on':'')+'"><input type="radio" name="md'+n+'" value="oefen"'+(pref.mode==="oefen"?' checked':'')+'>Oefenmodus<small>Na elk antwoord zie je meteen of het juist is, met uitleg.</small></label>';
+    h+='<label class="'+(pref.mode==="examen"?'on':'')+'"><input type="radio" name="md'+n+'" value="examen"'+(pref.mode==="examen"?' checked':'')+'>Examenmodus<small>Geen feedback tot je indient. Score per onderdeel volgens de slaagregels.</small></label>';
+    h+='</div><label class="row small" style="gap:6px;margin-bottom:14px"><input type="checkbox" id="mix'+n+'"'+(pref.mix?' checked':'')+'> Vragen in willekeurige volgorde (binnen elk deel)</label>';
+    h+='<button class="btn" data-s="start">Start examen '+n+'</button>';
+    if(saved && saved.ids && !saved.done) h+=' <span class="muted small">Starten wist je onafgewerkte poging.</span>';
+    h+='</div>';
+    el.innerHTML=h;
+    $$('.choice',el).forEach(function(g){ $$('input',g).forEach(function(inp){ inp.onchange=function(){ $$('label',g).forEach(function(l){l.classList.remove('on');}); inp.parentNode.classList.add('on'); }; }); });
+    $$('[data-s]',el).forEach(function(b){ b.onclick=function(){
+      var s=b.getAttribute('data-s');
+      if(s==="resume") open(load(key));
+      else if(s==="discard"){ drop(key); startScreen(); }
+      else if(s==="start"){
+        pref={scope:$('input[name=sc'+n+']:checked',el).value, mode:$('input[name=md'+n+']:checked',el).value, mix:$('#mix'+n).checked};
+        store(cfgKey,pref);
+        var st={ids:scopeIds(pref.scope,pref.mix),ans:{},cur:0,flags:{},done:false,mode:pref.mode,scope:pref.scope,elapsed:0,started:Date.now()};
+        store(key,st); open(st);
+      }
+    }; });
+  }
+  function open(st){
+    var qz=new Quiz(el,{key:key,state:st,title:'Examen '+n,exitLabel:'← Startscherm examen '+n,
+      onExit:function(){ startScreen(); window.scrollTo(0,0); },
+      onAgain:function(){ var s2={ids:scopeIds(st.scope,pref.mix),ans:{},cur:0,flags:{},done:false,mode:st.mode,scope:st.scope,elapsed:0,started:Date.now()}; store(key,s2); open(s2); }});
+    ACTIVE['ex'+n]=qz;
+  }
+  startScreen();
+}
+
+/* ================= Gids ================= */
+var GIDS={};
+function renderGuide(){
+  var el=$('#p-gids'); ACTIVE.gids=null;
+  var cnt={}; [1,2].forEach(function(n){ EXAMS[n].forEach(function(q){ cnt[q.t]=(cnt[q.t]||0)+1; }); });
+  var h=GUIDE_INTRO;
+  h+='<section class="card"><h2>Vraagtypes</h2><p class="muted">Klik op een type voor uitleg, of oefen meteen alle vragen van dat type uit beide examens.</p><div class="toc">';
+  TYPES.forEach(function(t){ h+='<a data-toc="'+t.t+'">'+t.n+' ('+(cnt[t.t]||0)+')</a>'; });
+  h+='</div></section>';
+  TYPES.forEach(function(t){
+    h+='<section class="card tcard" id="type-'+t.t+'"><h2>'+t.n+' <span class="ond">'+t.ond+'</span></h2>';
+    h+='<p>'+t.wat+'</p>';
+    if(t.fig) h+='<div class="figwrap">'+t.fig.map(F).join('')+'</div>';
+    if(t.fig2) h+='<div class="figwrap">'+t.fig2.map(F).join('')+'</div>';
+    if(t.t==="betonning") h+='<p class="muted small" style="text-align:center;margin-top:-6px">Boven: noord, oost, zuid, west. Onder: rode ton en groene kegel (binnenwater), alleenliggend gevaar, veilig vaarwater.</p>';
+    if(t.t==="tekens") h+='<p class="muted small" style="text-align:center;margin-top:-6px">Verbod (ankeren verboden) · gebod (max. 12 km/u) · aanwijzing (ankeren toegelaten)</p>';
+    h+='<h3>Aanpak</h3><ol class="steps">'+t.stappen.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol>';
+    if(t.tabel) h+='<table class="tbl">'+t.tabel.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>';}).join('')+'</table>';
+    if(t.ezel) h+='<div class="box ez"><h4>Ezelsbruggetjes</h4><ul>'+t.ezel.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ul></div>';
+    if(t.val) h+='<div class="box val"><h4>Valkuilen</h4><ul>'+t.val.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ul></div>';
+    h+='<button class="btn" data-prac="'+t.t+'"'+(cnt[t.t]?'':' disabled')+'>Oefen dit type ('+(cnt[t.t]||0)+' vragen)</button></section>';
+  });
+  el.innerHTML=h;
+  $$('[data-toc]',el).forEach(function(a){ a.onclick=function(){ var c=$('#type-'+a.getAttribute('data-toc')); if(c) c.scrollIntoView({behavior:"smooth",block:"start"}); }; });
+  $$('[data-prac]',el).forEach(function(b){ b.onclick=function(){ practice(b.getAttribute('data-prac')); }; });
+}
+function practice(t){
+  var el=$('#p-gids');
+  var ids=[]; [1,2].forEach(function(n){ EXAMS[n].forEach(function(q){ if(q.t===t) ids.push(q.id); }); });
+  var st={ids:ids,ans:{},cur:0,flags:{},done:false,mode:"oefen",elapsed:0};
+  ACTIVE.gids=new Quiz(el,{state:st,title:'Oefenen: '+TYPEN[t],simple:true,exitLabel:'← Terug naar de uitleg',
+    onExit:function(){ renderGuide(); var c=$('#type-'+t); if(c) c.scrollIntoView({block:"start"}); },
+    onAgain:function(){ practice(t); }});
+  window.scrollTo(0,0);
+}
+function gotoType(t){
+  switchTab('gids');
+  if(ACTIVE.gids) renderGuide();
+  var c=$('#type-'+t); if(c) setTimeout(function(){ c.scrollIntoView({block:"start"}); },30);
+}
+
+/* ================= Tabs ================= */
+var CUR="ex1";
+function switchTab(id){
+  CUR=id;
+  $$('nav.tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab')===id); });
+  $$('.panel').forEach(function(p){ p.classList.toggle('on', p.id==='p-'+id); });
+  store('sb_tab',id);
+}
+$$('nav.tabs button').forEach(function(b){ b.onclick=function(){ switchTab(b.getAttribute('data-tab')); window.scrollTo(0,0); }; });
+
+new ExamTab(1); new ExamTab(2); renderGuide();
+var lastTab=load('sb_tab'); if(lastTab && $('#p-'+lastTab)) switchTab(lastTab);
+
+/* timer */
+setInterval(function(){
+  var q=ACTIVE[CUR];
+  if(!q || q.st.done || q.st.mode!=="examen" || q.view!=="q" || document.hidden) return;
+  q.st.elapsed=(q.st.elapsed||0)+1;
+  var t=q.el.querySelector('.timer'); if(t) t.textContent='⏱ '+fmt(q.st.elapsed);
+  if(q.st.elapsed%5===0) q.save();
+},1000);
+
+/* toetsenbord */
+document.addEventListener('keydown',function(e){
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  var tag=(e.target&&e.target.tagName)||""; if(tag==="INPUT"||tag==="TEXTAREA") return;
+  var q=ACTIVE[CUR]; if(!q || q.view!=="q") return;
+  var k=e.key.toLowerCase(), map={a:0,b:1,c:2,"1":0,"2":1,"3":2};
+  if(map.hasOwnProperty(k)){ q.choose(map[k]); e.preventDefault(); }
+  else if(e.key==="ArrowRight"){ q.go(q.st.cur+1); e.preventDefault(); }
+  else if(e.key==="ArrowLeft"){ q.go(q.st.cur-1); e.preventDefault(); }
+});
+
+window.__SB={QBYID:QBYID,perm:perm,score:score};
+})();
+
+</script>
+</body>
+</html>
